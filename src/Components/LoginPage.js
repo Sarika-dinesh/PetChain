@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGoogle, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import './LoginPage.css'; // Import the CSS file
+import DogWalk from '../Assets/dogwalk.svg'; // Correct import of the image
 
 function LoginPage() {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
@@ -86,17 +87,21 @@ function LoginPage() {
           <div className="content">
             <h3>New here?</h3>
             <p>Join us! Please Sign up!</p>
-            <button className="btn transparent" onClick={handleSignUpClick}>Sign up</button>
+            <button className="btn transparent" onClick={handleSignUpClick}>
+              Sign up
+            </button>
           </div>
-          <img src="/img/dogLogin1.svg" className="image" alt="" />
+          <img src={DogWalk} className="image" alt="Dog walking illustration" />
         </div>
         <div className="panel right-panel">
           <div className="content">
             <h3>One of us?</h3>
             <p>Click here to Login</p>
-            <button onClick={handleSignInClick} className="btn transparent">Sign in</button>
+            <button onClick={handleSignInClick} className="btn transparent">
+              Sign in
+            </button>
           </div>
-          <img src="/img/dogLogin.svg" className="image" alt="" />
+          <img src={DogWalk} className="image" alt="Dog walking illustration" />
         </div>
       </div>
     </div>
