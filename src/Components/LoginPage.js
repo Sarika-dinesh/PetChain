@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGoogle, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
-import './LoginPage.css'; // Import the CSS file
+//import './LoginPage.css'; // Import the CSS file
+import './Login.css';
 import DogWalk from '../Assets/dogwalk.svg'; // Correct import of the image
 
 function LoginPage() {
