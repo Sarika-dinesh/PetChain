@@ -6,7 +6,9 @@ import Footer from './Components/Footer';
 import Contact from './Components/Contact';
 import Services from './Components/Services';
 import PetProfile from './Components/PetProfile';
+import LoginRegister from './Components/LoginPage';
 import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
+import LoginRegisterJsx from './Components/LoginPageCheck';
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
                 <Home />
                 <About />
                 <Services />
+                <LoginRegister/>
                 <Contact />
                 <Footer />
               </>
@@ -30,6 +33,7 @@ function App() {
           {/* Separate pages */}
           <Route path="/pet-profile" element={<PetProfile />} />
           <Route path="/search-profile" element={<SearchPetProfileDisplay />} />
+          <Route path="/login" element={<LoginRegister />}/>
         </Routes>
       </Router>
     </div>
