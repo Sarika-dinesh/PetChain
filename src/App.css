@@ -183,7 +183,7 @@ nav {
   margin: 6rem 0rem;
 }
 .contact-form-container {
-  background-color: rgb(242, 239, 226);
+  background-color: #f0f0f0;
   max-width: 700px;
   width: 100%;
   margin-top: 3rem;
@@ -269,6 +269,7 @@ nav {
 }
 .work-section-wrapper {
   margin-top: 15rem;
+  margin-bottom: 15rem;
 }
 .work-section-top p {
   text-align: center;

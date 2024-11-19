@@ -15,8 +15,8 @@ input {
   background-color: #fff;
   min-height: 100vh;
   overflow: hidden;
-  margin-top: 10rem;
-  margin-bottom: 8rem;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
 }
 
 .forms-container {
