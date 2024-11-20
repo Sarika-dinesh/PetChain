@@ -9,6 +9,7 @@ import PetProfile from './Components/PetProfile';
 import LoginRegister from './Components/LoginPage';
 import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
 //import LoginRegisterJsx from './Components/LoginPageCheck';
+import OwnershipTransfer from './Components/OwnershipTransfer';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/pet-profile" element={<PetProfile />} />
           <Route path="/search-profile" element={<SearchPetProfileDisplay />} />
           <Route path="/login" element={<LoginRegister />}/>
+          <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
         </Routes>
       </Router>
     </div>
