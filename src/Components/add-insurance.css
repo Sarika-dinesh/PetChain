@@ -29,14 +29,14 @@
   padding: 20px;
 }
 
-.primary-subheading {
+.primary-insurance-subheading {
   color: #ff6a00;
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.primary-heading {
+.primary-insurance-heading {
   font-size: 36px;
   color: #333;
   margin-bottom: 20px;
@@ -56,7 +56,8 @@
 
 
 .add-insurance-buttons-container .primary-button {
-  background-color: #ff6a00;
+  /* background-color: #ff6a00; */
+  background-color: orange;
   color: #fff;
   padding: 10px 20px;
   font-size: 16px;
@@ -67,6 +68,6 @@
   transition: all 0.3s ease;
 }
 
-.add-insurance-buttons-container .primary-button:hover {
-  background-color: #e55a00;
+.add-insurance-buttons-container .primary-insurance-button:hover {
+  background-color: orange;
 }

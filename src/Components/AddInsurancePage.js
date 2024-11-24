@@ -16,7 +16,7 @@ const AddInsurancePage = () => {
           <Box>
             <Button
               color="inherit"
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/pprofile")}
               sx={{ ml: 2 }}
             >
               My Profile

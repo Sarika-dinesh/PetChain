@@ -31,7 +31,6 @@ function App() {
                 <Home />
                 <About />
                 <Services />
-                <LoginRegister/>
                 <Contact />
                 <Footer />
               </>

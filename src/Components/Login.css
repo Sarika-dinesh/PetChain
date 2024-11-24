@@ -401,4 +401,52 @@ form.sign-in-form {
     bottom: 28%;
     transform: translate(-50%, 100%);
   }
+/* Forms container */
+.forms-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  z-index: 5;
+  transition: 0.6s ease-in-out;
+}
+
+/* Sign-In Form */
+.sign-in-form {
+  display: none;
+  opacity: 0;
+  transition: all 0.6s ease-in-out;
+}
+
+/* Sign-Up Form */
+.sign-up-form {
+  opacity: 1;
+  transition: all 0.6s ease-in-out;
+}
+
+/* Container with sign-up-mode class */
+.container.sign-up-mode .sign-in-form {
+  display: none;
+  opacity: 0;
+}
+
+.container.sign-up-mode .sign-up-form {
+  display: block;
+  opacity: 1;
+}
+
+/* Default container without sign-up-mode */
+.container .sign-in-form {
+  display: block;
+  opacity: 1;
+}
+
+.container .sign-up-form {
+  display: none;
+  opacity: 0;
+}
+
 }

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { faFacebookF, faTwitter, faGoogle, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
-//import './LoginPage.css'; // Import the CSS file
 import './Login.css';
-import DogWalk from '../Assets/dogwalk.svg'; // Correct import of the image
+import DogWalk from '../Assets/dogwalk.svg';
 
 function LoginPage() {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(""); // Track the selected role
 
   const handleSignUpClick = () => {
     setIsSignUpMode(true);
@@ -15,6 +14,10 @@ function LoginPage() {
 
   const handleSignInClick = () => {
     setIsSignUpMode(false);
+  };
+
+  const handleRoleChange = (e) => {
+    setSelectedRole(e.target.value); // Update the selected role
   };
 
   return (
@@ -26,35 +29,21 @@ function LoginPage() {
             <h2 className="title">Sign in</h2>
             <div className="input-field">
               <FontAwesomeIcon icon={faUser} />
-              <input type="text" placeholder="Username" />
+              <input type="text" placeholder="Email" />
             </div>
             <div className="input-field">
               <FontAwesomeIcon icon={faLock} />
               <input type="password" placeholder="Password" />
             </div>
             <button className="btn">Login</button>
-            <p className="social-text">Sign in with social platforms</p>
-            <div className="social-media">
-              <a href="#" className="social-icon">
-                <FontAwesomeIcon icon={faFacebookF} />
-              </a>
-              <a href="#" className="social-icon">
-                <FontAwesomeIcon icon={faTwitter} />
-              </a>
-              <a href="#" className="social-icon">
-                <FontAwesomeIcon icon={faGoogle} />
-              </a>
-              <a href="#" className="social-icon">
-                <FontAwesomeIcon icon={faLinkedinIn} />
-              </a>
-            </div>
           </form>
+
           {/* Sign-Up Form */}
           <form action="#" className="sign-up-form">
             <h2 className="title">Sign up</h2>
             <div className="input-field">
               <FontAwesomeIcon icon={faUser} />
-              <input type="text" placeholder="Username" />
+              <input type="text" placeholder="Name" />
             </div>
             <div className="input-field">
               <FontAwesomeIcon icon={faEnvelope} />
@@ -64,22 +53,46 @@ function LoginPage() {
               <FontAwesomeIcon icon={faLock} />
               <input type="password" placeholder="Password" />
             </div>
-            <button className="btn">Sign Up</button>
-            <p className="social-text">Or Sign up with social platforms</p>
-            <div className="social-media">
-              <a href="#" className="social-icon">
-                <FontAwesomeIcon icon={faFacebookF} />
-              </a>
-              <a href="#" className="social-icon">
-                <FontAwesomeIcon icon={faTwitter} />
-              </a>
-              <a href="#" className="social-icon">
-                <FontAwesomeIcon icon={faGoogle} />
-              </a>
-              <a href="#" className="social-icon">
-                <FontAwesomeIcon icon={faLinkedinIn} />
-              </a>
+            <div className="input-field">
+              <FontAwesomeIcon icon={faLock} />
+              <input type="password" placeholder="Confirm Password" />
             </div>
+            <div className="input-field">
+              <select
+                className="dropdown"
+                value={selectedRole}
+                onChange={handleRoleChange}
+              >
+                <option value="" disabled>
+                  Select Role
+                </option>
+                <option value="owner">Owner</option>
+                <option value="doctor">Doctor</option>
+                <option value="insurance-provider">Insurance Provider</option>
+              </select>
+            </div>
+
+            {/* Dynamic Fields Based on Role */}
+            {selectedRole === "owner" && (
+              <div className="input-field">
+                <FontAwesomeIcon icon={faUser} />
+                <input type="text" placeholder="Address" />
+              </div>
+            )}
+            {selectedRole === "doctor" && (
+              <div className="input-field">
+                <FontAwesomeIcon icon={faUser} />
+                <input type="text" placeholder="License Number" />
+              </div>
+            )}
+            {selectedRole === "insurance-provider" && (
+              <div className="input-field">
+                <FontAwesomeIcon icon={faUser} />
+                <input type="text" placeholder="Company Name" />
+              </div>
+            )}
+
+            <button className="btn">Sign Up</button>
           </form>
         </div>
       </div>

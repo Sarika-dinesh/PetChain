@@ -18,6 +18,7 @@ const InsuranceClaimPage = () => {
     petName: '',
     insurancePolicy: '',
     claimReason: '',
+    insuranceAmount: '',
     documents: null,
   });
 
@@ -49,7 +50,7 @@ const InsuranceClaimPage = () => {
           <Box>
             <Button
               color="inherit"
-              onClick={() => navigate('/profile')}
+              onClick={() => navigate('/pprofile')}
               sx={{ mx: 1 }}
             >
               My Profile
@@ -133,6 +134,16 @@ const InsuranceClaimPage = () => {
                 multiline
                 rows={4}
                 value={formData.claimReason}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                name="insuranceAmount"
+                label="Claim Amount"
+                value={formData.insuranceAmount}
                 onChange={handleChange}
                 required
               />

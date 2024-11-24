@@ -40,16 +40,16 @@ const PetProfile = () => {
         backgroundPosition: 'top center',
         backgroundRepeat: 'no-repeat',
         minHeight: '100vh',
-        padding: '20px',
+        /*padding: '20px',*/
         fontFamily: 'Arial, sans-serif',
       }}
     >
       {/* Header */}
-      <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
+      <AppBar position="flex" sx={{ bgcolor: "orange", color: "white" }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h6">PetChain</Typography>
           <Box>
-            <Button color="inherit" onClick={() => navigate('/profile')} sx={{ mx: 1 }}>
+            <Button color="inherit" onClick={() => navigate('/pprofile')} sx={{ mx: 1 }}>
               My Profile
             </Button>
             <Button color="inherit" onClick={() => navigate('/insurance')} sx={{ mx: 1 }}>
