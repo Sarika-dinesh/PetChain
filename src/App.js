@@ -10,6 +10,10 @@ import LoginRegister from './Components/LoginPage';
 import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
 //import LoginRegisterJsx from './Components/LoginPageCheck';
 import OwnershipTransfer from './Components/OwnershipTransfer';
+import InsuranceClaims from './Components/InsuranceClaims';
+import AddInsurancePage from './Components/AddInsurance';
+import Insurance from './Components/Insurance'
+
 
 function App() {
   return (
@@ -36,6 +40,9 @@ function App() {
           <Route path="/search-profile" element={<SearchPetProfileDisplay />} />
           <Route path="/login" element={<LoginRegister />}/>
           <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
+          <Route path="/claim-insurance" element={<InsuranceClaims />} />
+        <Route path="/add-insurance" element={<AddInsurancePage />} />
+        <Route path="/insurance" element={<Insurance />} />
         </Routes>
       </Router>
     </div>

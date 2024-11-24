@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Typography } from 'antd';
 import './PetProfile.css';
-//import { HomeOutlined, UserOutlined } from '@ant-design/icons';
+
 
 const { Title, Text } = Typography;
 
