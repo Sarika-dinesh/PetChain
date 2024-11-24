@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Logo from "../Assets/Logo.svg"
+import { useNavigate } from 'react-router-dom';
 
 import { BsCart2 } from "react-icons/bs";
 import { HiOutlineBars3 } from "react-icons/hi2";
@@ -19,6 +20,8 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const navigate = useNavigate(); // Initialize navigate
+
   const [showDropdown, setShowDropdown] = useState(false); 
   const menuOptions = [
     {
@@ -51,7 +54,13 @@ const Navbar = () => {
         <a href="">Contact</a>
         {/* Wrapper for Getting Started button and dropdown */}
         <div className="button-dropdown-container">
-          <button
+        <button
+        className="primary-button"
+        onClick={() => navigate('/login')} // Navigate to /login
+      >
+        Getting Started
+      </button>
+          {/* <button
             className='primary-button'
             onClick={() => setShowDropdown(prev => !prev)}
           >
@@ -64,7 +73,7 @@ const Navbar = () => {
                 <li><a href="/register">Register</a></li>
               </ul>
             </div>
-          )}
+          )} */}
         </div>
       </div>  
       <div className="navbar-menu-container">
