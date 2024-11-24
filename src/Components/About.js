@@ -13,8 +13,8 @@ const About = () => {
         <img src={AboutBackgroundImage} alt="" />
       </div>
       <div className="about-section-text-container">
-        <p className="primary-subheading">About</p>
-        <h1 className="primary-heading">
+        <p className="primary-subheading"style={{fontSize: '30px'}}>About</p>
+        <h1 className="primary-heading" style={{fontSize: '20px'}}>
         Care and Connection in Every Paw Print
         </h1>
         <p className="primary-text">

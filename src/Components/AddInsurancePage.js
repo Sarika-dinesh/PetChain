@@ -56,7 +56,7 @@ const AddInsurancePage = () => {
         </div>
         <div className="add-insurance-section-text-container">
           <p className="primary-subheading"></p>
-          <h1 className="primary-heading">Secure Your Pet's Future</h1>
+          <h1 className="add-insurance-primary-heading">Secure Your Pet's Future</h1>
           <p className="primary-text">
             Protect your pets with comprehensive pet insurance plans.
             From routine checkups to unforeseen emergencies, we've got you
@@ -66,7 +66,7 @@ const AddInsurancePage = () => {
             
           </p>
           <div className="add-insurance-buttons-container">
-  <button className="primary-button" onClick={() => navigate('/add-insurance')}>
+  <button className="add-insurance-primary-button" onClick={() => navigate('/add-insurance')}>
     Add Insurance
   </button>
   <button

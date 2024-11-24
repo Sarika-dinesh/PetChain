@@ -190,7 +190,7 @@ const PetProfile = () => {
           <Button
             variant="contained"
             sx={{
-              bgcolor: 'orange',
+              bgcolor: 'red',
               color: '#fff',
               '&:hover': {
                 bgcolor: '#D04E00',

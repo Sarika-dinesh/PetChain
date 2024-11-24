@@ -18,6 +18,7 @@ import CommentRoundedIcon from "@mui/icons-material/CommentRounded";
 import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
+
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate(); // Initialize navigate
@@ -48,10 +49,10 @@ const Navbar = () => {
         <img src={Logo} alt="" />
       </div>
       <div className="navbar-links-container">
-        <a href="">Home</a>
-        <a href="">About</a>
-        <a href="">Services</a>
-        <a href="">Contact</a>
+        <a href="/home">Home</a>
+        <a href="/about-us">About</a>
+        <a href="/services">Services</a>
+        <a href="/contact-info">Contact</a>
         {/* Wrapper for Getting Started button and dropdown */}
         <div className="button-dropdown-container">
         <button

@@ -52,7 +52,7 @@ const AddPetPage = () => {
             Hi User, welcome to PetChain! Thank you for choosing us.
           </Typography>
 
-          <h1 className="primary-heading">Add Your Beloved Pet</h1>
+          <h1 className="add-pet-primary-heading">Add Your Beloved Pet</h1>
           <p className="primary-text">
             Let's create a safe and secure profile for your pet! Add their
             details today to get started on your journey with PetChain.

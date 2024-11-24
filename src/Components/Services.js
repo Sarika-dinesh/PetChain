@@ -31,7 +31,7 @@ const Work = () => {
     <div className="work-section-wrapper">
       <div className="work-section-top">
         <p className="primary-subheading"></p>
-        <h1 className="primary-heading">Services We Provide</h1>
+        <h1 className="primary-heading" style={{fontSize: "30px"}}>Services We Provide</h1>
         <p className="primary-text">
           
         </p>
@@ -40,7 +40,7 @@ const Work = () => {
         {workInfoData.map((data) => (
           <div className="work-section-info" key={data.title}>
             <div className="info-boxes-img-container">
-              <img src={data.image} alt="" />
+              <img src={data.image} alt="" style={{height:'250px', width:'200px'}}/>
             </div>
             <h2>{data.title}</h2>
             <p>{data.text}</p>

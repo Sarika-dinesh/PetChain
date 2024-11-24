@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './Components/Home';
 import About from './Components/About';
-import Footer from './Components/Footer';
+// import Footer from './Components/Footer';
 import Contact from './Components/Contact';
 import Services from './Components/Services';
 import PetProfile from './Components/PetProfile';
@@ -32,7 +32,7 @@ function App() {
                 <About />
                 <Services />
                 <Contact />
-                <Footer />
+                {/* <Footer /> */}
               </>
             }
           />
@@ -48,6 +48,10 @@ function App() {
         <Route path="/owner-transfer" element={<Owner />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/pprofile" element={<MainPage />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/about-us" element={<About/>} />
+        <Route path="/contact-info" element={<Contact />} />
+        <Route path = "/services" element={<Services />}  />
         </Routes>
       </Router>
     </div>
