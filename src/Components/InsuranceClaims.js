@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import {
-  Container,
   TextField,
   Button,
   Typography,
   Box,
   Grid,
+  AppBar,
+  Toolbar,
+  Container,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const InsuranceClaimPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     ownerName: '',
     petName: '',
@@ -34,19 +38,54 @@ const InsuranceClaimPage = () => {
   return (
     <Box
       sx={{
-        bgcolor: 'orange', // Full-screen orange background
-        minHeight: '100vh', // Ensure it covers the entire viewport
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 3,
+        bgcolor: 'white', // Full-screen light orange background
+        minHeight: '100vh',
       }}
     >
+      {/* Header */}
+      <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Typography variant="h6">PetChain</Typography>
+          <Box>
+            <Button
+              color="inherit"
+              onClick={() => navigate('/profile')}
+              sx={{ mx: 1 }}
+            >
+              My Profile
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => navigate('/insurance')}
+              sx={{ mx: 1 }}
+            >
+              Insurance
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => navigate('/pet-health')}
+              sx={{ mx: 1 }}
+            >
+              Pet Health
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => navigate('/owner-transfer')}
+              sx={{ mx: 1 }}
+            >
+              Ownership Transfer
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      {/* Main Form Section */}
       <Container
-        maxWidth="md" // Increased width to medium
+        maxWidth="md"
         sx={{
-          bgcolor: 'white',
-          p: 5, // Increased padding
+          bgcolor: 'white', // Light orange color
+          mt: 5,
+          p: 4,
           borderRadius: 2,
           boxShadow: 3,
         }}
@@ -54,10 +93,7 @@ const InsuranceClaimPage = () => {
         <Typography variant="h4" align="center" gutterBottom>
           Pet Insurance Claim
         </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-        >
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -106,6 +142,13 @@ const InsuranceClaimPage = () => {
                 variant="contained"
                 component="label"
                 fullWidth
+                sx={{
+                  bgcolor: 'orange',
+                  color: '#fff',
+                  '&:hover': {
+                    bgcolor: '#D04E00',
+                  },
+                }}
               >
                 Upload Documents
                 <input
@@ -120,8 +163,14 @@ const InsuranceClaimPage = () => {
               <Button
                 type="submit"
                 variant="contained"
-                color="primary"
                 fullWidth
+                sx={{
+                  bgcolor: 'orange',
+                  color: '#fff',
+                  '&:hover': {
+                    bgcolor: '#D04E00',
+                  },
+                }}
               >
                 Submit Claim
               </Button>

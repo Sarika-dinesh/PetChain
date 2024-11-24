@@ -1,0 +1,68 @@
+.add-pet-section-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.add-pet-section-text-container {
+  text-align: center;
+}
+
+.greeting-message {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.primary-heading {
+  font-size: 2.5rem;
+  color: #ff5722; /* Orange color */
+  margin-bottom: 20px;
+}
+
+.primary-text {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+.add-pet-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-pet-icon {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+}
+
+.add-pet-text {
+  font-size: 1rem;
+  color: #ff5722;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.add-pet-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.primary-button {
+  background-color: #ff5722;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  background-color: #e64a19;
+}

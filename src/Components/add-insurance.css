@@ -1,0 +1,72 @@
+.add-insurance-section-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  min-height: calc(100vh - 64px); /* Adjust for header height */
+  background-color: #f8f8f8;
+  padding-top: 64px; /* Push content below header */
+}
+
+.add-insurance-background-image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.add-insurance-section-image-container img {
+  max-width: 500px;
+  height: auto;
+  margin-left: 50px;
+}
+
+.add-insurance-section-text-container {
+  max-width: 600px;
+  padding: 20px;
+}
+
+.primary-subheading {
+  color: #ff6a00;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.primary-heading {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.primary-text {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.add-insurance-buttons-container {
+    display: flex; /* Ensures buttons are in a row */
+    gap: 10px; /* Adds space between buttons */
+    margin-top: 20px; /* Adjusts spacing from above content */
+  }
+
+
+.add-insurance-buttons-container .primary-button {
+  background-color: #ff6a00;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-insurance-buttons-container .primary-button:hover {
+  background-color: #e55a00;
+}

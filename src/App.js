@@ -12,7 +12,10 @@ import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
 import OwnershipTransfer from './Components/OwnershipTransfer';
 import InsuranceClaims from './Components/InsuranceClaims';
 import AddInsurancePage from './Components/AddInsurance';
-import Insurance from './Components/Insurance'
+import AddInsuranceClaim from './Components/AddInsurancePage';
+import Owner from './Components/OwnershipTrans';
+import Profile from './Components/profilepet';
+import MainPage from './Components/Profile';
 
 
 function App() {
@@ -42,7 +45,10 @@ function App() {
           <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
           <Route path="/claim-insurance" element={<InsuranceClaims />} />
         <Route path="/add-insurance" element={<AddInsurancePage />} />
-        <Route path="/insurance" element={<Insurance />} />
+        <Route path="/insurance" element={<AddInsuranceClaim />} />
+        <Route path="/owner-transfer" element={<Owner />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/pprofile" element={<MainPage />} />
         </Routes>
       </Router>
     </div>
