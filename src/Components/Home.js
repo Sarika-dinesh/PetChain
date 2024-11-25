@@ -21,8 +21,8 @@ const Home = () => {
             The Future of Petcare—Connected, Secure, Decentralized
           </p>
           <div>
-            <input type="text" className="search-input" placeholder="    Pet ID.." />
-            <button className="secondary-button" style={{marginTop: '15px', width:'100px', height:'35px', fontSize:' 20px'}}>Search</button>
+            <input type="text" className="search-input" placeholder="   Enter Pet ID.." />
+            <button className="secondary-button" style={{marginTop: '15px', width:'220px', height:'35px', fontSize:' 20px'}}>Found a Pet</button>
           </div>
         </div>
         <div className="home-image-section">
