@@ -16,6 +16,7 @@ import AddInsuranceClaim from './Components/AddInsurancePage';
 import Owner from './Components/OwnershipTrans';
 import Profile from './Components/profilepet';
 import MainPage from './Components/Profile';
+import Health from './Components/Health';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/login" element={<LoginRegister />}/>
           <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
           <Route path="/claim-insurance" element={<InsuranceClaims />} />
+        <Route path="/pet-health" element={<Health />} />
         <Route path="/add-insurance" element={<AddInsurancePage />} />
         <Route path="/insurance" element={<AddInsuranceClaim />} />
         <Route path="/owner-transfer" element={<Owner />} />
