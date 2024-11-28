@@ -25,8 +25,6 @@ const OwnershipTransfer = () => {
     phone: "",
   });
 
-  const [errors, setErrors] = useState({});
-
   const petData = {
     name: "Coco",
     gender: "Female",
@@ -41,30 +39,12 @@ const OwnershipTransfer = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" });
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
-    if (!formData.email.trim()) newErrors.email = "Email address is required";
-    if (!formData.id.trim()) newErrors.id = "ID is required";
-    if (!formData.address.trim()) newErrors.address = "Address is required";
-    if (!formData.city.trim()) newErrors.city = "City is required";
-    if (!formData.state.trim()) newErrors.state = "State is required";
-    if (!formData.zipcode.trim()) newErrors.zipcode = "Zip Code is required";
-    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
-    return newErrors;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      alert("Ownership transferred successfully!");
-    }
+    console.log(formData);
+    alert("Ownership transferred successfully!");
   };
 
   return (
@@ -123,7 +103,7 @@ const OwnershipTransfer = () => {
             Ownership Transfer
           </Typography>
 
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }} style={{textDecoration: "underline"}}>
             Pet Information
           </Typography>
           <Box sx={{ mb: 3 }}>
@@ -139,6 +119,9 @@ const OwnershipTransfer = () => {
             <Typography>
               <strong>Breed:</strong> {petData.breed}
             </Typography>
+            <Typography variant="h6" gutterBottom sx={{ mt: 2 }} style={{textDecoration: "underline"}}>
+              Owner's Information
+            </Typography>
             <Typography>
               <strong>Owner's Name:</strong> {petData.ownerName}
             </Typography>
@@ -153,7 +136,7 @@ const OwnershipTransfer = () => {
             </Typography>
           </Box>
 
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom style={{textDecoration: "underline"}}>
             New Owner's Information
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
@@ -175,8 +158,7 @@ const OwnershipTransfer = () => {
                     label={field.label}
                     value={formData[field.name]}
                     onChange={handleChange}
-                    error={!!errors[field.name]}
-                    helperText={errors[field.name]}
+                    required
                   />
                 </Grid>
               ))}

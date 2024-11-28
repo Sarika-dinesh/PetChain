@@ -64,7 +64,7 @@ const AddPetPage = () => {
               src={AddPetIcon} 
               alt="Add Pet Icon" 
               className="add-pet-icon" 
-              onClick={() => navigate('/add-pet-details')}
+              onClick={() => navigate('/pet-registration')}
             />
             <p className="add-pet-text">Click to Add Pet</p>
           </div>
@@ -73,7 +73,7 @@ const AddPetPage = () => {
           <div className="add-pet-buttons-container">
             <button 
               className="primary-button" 
-              onClick={() => navigate('/add-pet-details')}
+              onClick={() => navigate('/pet-registration')}
             >
               Add Pet
             </button>

@@ -17,6 +17,7 @@ import Owner from './Components/OwnershipTrans';
 import Profile from './Components/profilepet';
 import MainPage from './Components/Profile';
 import Health from './Components/Health';
+import RegisterPet from './Components/RegisterPet'
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
         <Route path="/about-us" element={<About/>} />
         <Route path="/contact-info" element={<Contact />} />
         <Route path = "/services" element={<Services />}  />
+        <Route path="/pet-registration" element={<RegisterPet />} />
         </Routes>
       </Router>
     </div>

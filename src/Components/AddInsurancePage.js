@@ -66,7 +66,7 @@ const AddInsurancePage = () => {
             
           </p>
           <div className="add-insurance-buttons-container">
-  <button className="add-insurance-primary-button" onClick={() => navigate('/add-insurance')}>
+  <button className="primary-button" onClick={() => navigate('/add-insurance')}>
     Add Insurance
   </button>
   <button

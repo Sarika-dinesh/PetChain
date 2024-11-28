@@ -92,14 +92,21 @@ const PetHealth = () => {
     }
   };
 
-  const handleShareWithVet = () => {
-    if (!formData.vetId.trim()) {
-      alert("Please enter a valid Vet ID.");
-      return;
-    }
-    alert(`Data shared with Vet ID: ${formData.vetId}`);
-    setFormData({ ...formData, vetId: "" });
+  // const handleShareWithVet = () => {
+  //   if (!formData.vetId.trim()) {
+  //     alert("Please enter a valid Vet ID.");
+  //     return;
+  //   }
+  //   alert(`Data shared with Vet ID: ${formData.vetId}`);
+  //   setFormData({ ...formData, vetId: "" });
+  // };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    alert("Updated health info successfully!");
   };
+
 
   const validateForm = () => {
     const newErrors = {};
@@ -495,7 +502,7 @@ const PetHealth = () => {
               mt: 3,
             }}
           >
-            <TextField
+            {/* <TextField
               name="vetId"
               label="Vet ID"
               value={formData.vetId}
@@ -514,7 +521,14 @@ const PetHealth = () => {
               }}
             >
               Share With Vet
-            </Button>
+            </Button> */}
+            <Box component="form" onSubmit={handleSave} sx={{ mt: 2 }}>
+            <Grid item xs={12}>
+              <Button type="submit" variant="contained" fullWidth sx={{ bgcolor: "orange" }}>
+                Save Info  (Needs to be revisited after integration)
+              </Button>
+            </Grid>
+            </Box>
           </Box>
         </Container>
       </Box>

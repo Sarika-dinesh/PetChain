@@ -14,13 +14,16 @@ import { useNavigate } from 'react-router-dom';
 const InsuranceClaimPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    ownerName: '',
-    petName: '',
     insurancePolicy: '',
     claimReason: '',
     insuranceAmount: '',
     documents: null,
   });
+
+  const petData = {
+    petName: "Coco",
+    ownerName: "Sakshi Singh",
+  }
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -97,24 +100,28 @@ const InsuranceClaimPage = () => {
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                name="ownerName"
-                label="Owner's Name"
-                value={formData.ownerName}
-                onChange={handleChange}
-                required
-              />
+            <TextField
+              fullWidth
+              label="Owner's Name"
+              value={petData.ownerName}
+              variant="outlined"
+              margin="normal"
+              InputProps={{
+                readOnly: true,
+              }}
+            />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                name="petName"
-                label="Pet's Name"
-                value={formData.petName}
-                onChange={handleChange}
-                required
-              />
+            <TextField
+              fullWidth
+              label="Pet's Name"
+              value={petData.petName}
+              variant="outlined"
+              margin="normal"
+              InputProps={{
+                readOnly: true,
+              }}
+            />
             </Grid>
             <Grid item xs={12}>
               <TextField
