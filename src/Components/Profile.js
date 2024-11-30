@@ -1,10 +1,12 @@
 import React from "react";
 import { AppBar, Toolbar, Button, Box, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AddPetIcon from "../Assets/image.png"; // Icon for adding a pet
 import './add-pet.css'; // Create and link a new CSS file for this page
 const AddPetPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const username = location.state?.username || JSON.parse(localStorage.getItem("user"))?.name;
 
   return (
     <div>
@@ -49,7 +51,7 @@ const AddPetPage = () => {
       <div className="add-pet-section-container">
         <div className="add-pet-section-text-container">
           <Typography variant="h5" className="greeting-message">
-            Hi User, welcome to PetChain! Thank you for choosing us.
+          Hi {username}, welcome to PetChain! Thank you for choosing us.
           </Typography>
 
           <h1 className="add-pet-primary-heading">Add Your Beloved Pet</h1>
@@ -72,13 +74,19 @@ const AddPetPage = () => {
           {/* Navigation Buttons */}
           <div className="add-pet-buttons-container">
             <button 
+<<<<<<< HEAD
               className="primary-button" 
               onClick={() => navigate('/pet-registration')}
+=======
+              className="pprimary-button" 
+              
+              onClick={() => navigate('/add-pet-details')}
+>>>>>>> 18294f5 (Integration with Backend)
             >
               Add Pet
             </button>
             <button
-              className="primary-button"
+              className="pprimary-button"
               onClick={() => navigate('/profile')}
             >
               Manage Pets
