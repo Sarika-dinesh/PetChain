@@ -43,6 +43,13 @@ const AddPetPage = () => {
             >
               Ownership Transfer
             </Button>
+            <Button
+              color="inherit"
+              onClick={() => navigate("/", { replace: true })}
+              sx={{ ml: 2 }}
+            >
+              Logout
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -74,14 +81,8 @@ const AddPetPage = () => {
           {/* Navigation Buttons */}
           <div className="add-pet-buttons-container">
             <button 
-<<<<<<< HEAD
-              className="primary-button" 
+              className="pprimary-button"               
               onClick={() => navigate('/pet-registration')}
-=======
-              className="pprimary-button" 
-              
-              onClick={() => navigate('/add-pet-details')}
->>>>>>> 18294f5 (Integration with Backend)
             >
               Add Pet
             </button>
