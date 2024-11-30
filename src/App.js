@@ -18,6 +18,7 @@ import Profile from './Components/profilepet';
 import MainPage from './Components/Profile';
 import Health from './Components/Health';
 import RegisterPet from './Components/RegisterPet'
+import RequireAuth from "./Components/RequireAuth";
 
 
 function App() {
@@ -43,7 +44,13 @@ function App() {
           <Route path="/pet-profile" element={<PetProfile />} />
           <Route path="/search-profile" element={<SearchPetProfileDisplay />} />
           <Route path="/login" element={<LoginRegister />}/>
-          <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/about-us" element={<About/>} />
+        <Route path="/contact-info" element={<Contact />} />
+        <Route path = "/services" element={<Services />}  />
+        <Route path="/pet-registration" element={<RegisterPet />} />
+        <Route element={<RequireAuth />}>
+        <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
           <Route path="/claim-insurance" element={<InsuranceClaims />} />
         <Route path="/pet-health" element={<Health />} />
         <Route path="/add-insurance" element={<AddInsurancePage />} />
@@ -51,11 +58,7 @@ function App() {
         <Route path="/owner-transfer" element={<Owner />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/pprofile" element={<MainPage />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/about-us" element={<About/>} />
-        <Route path="/contact-info" element={<Contact />} />
-        <Route path = "/services" element={<Services />}  />
-        <Route path="/pet-registration" element={<RegisterPet />} />
+        </Route>
         </Routes>
       </Router>
     </div>

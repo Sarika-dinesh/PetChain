@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import './Login.css';
@@ -18,9 +18,36 @@ function LoginPage() {
     additionalInfo: "",
   });
 
-  const handleSignUpClick = () => setIsSignUpMode(true);
-  const handleSignInClick = () => setIsSignUpMode(false);
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      navigate("/pprofile", { state: { username: storedUser.name } });
+    }
+  }, [navigate]);
 
+  const handleSignUpClick = () => {
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+      additionalInfo: "",
+    });
+    setIsSignUpMode(true);
+  };
+  
+  const handleSignInClick = () => {
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+      additionalInfo: "",
+    });
+    setIsSignUpMode(false);
+  };
   const handleRoleChange = (e) => setSelectedRole(e.target.value);
 
   const handleInputChange = (e) => {
@@ -82,14 +109,21 @@ function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
+        localStorage.setItem("user", JSON.stringify(data.user));
         alert("Login successful!");
-        console.log("User Details:", data.user);
-        console.log("Token:", data.token);
-        //redirect to pprofile
         navigate("/pprofile", { state: { username: data.user.name } });
       } else {
         alert(data.message || "Login failed!");
       }
+      // if (response.ok) {
+      //   alert("Login successful!");
+      //   console.log("User Details:", data.user);
+      //   console.log("Token:", data.token);
+      //   //redirect to pprofile
+      //   navigate("/pprofile", { state: { username: data.user.name } });
+      // } else {
+      //   alert(data.message || "Login failed!");
+      //}
     } catch (error) {
       console.error("Error during login:", error);
     }

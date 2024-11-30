@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AppBar, Toolbar, Button, Box, Typography } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import AddPetIcon from "../Assets/image.png"; // Icon for adding a pet
-import './add-pet.css'; // Create and link a new CSS file for this page
+import './add-pet.css'; // CSS file for styling
+
 const AddPetPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const username = location.state?.username || JSON.parse(localStorage.getItem("user"))?.name;
 
-  return (
+  // Retrieve user information from state or localStorage
+  const user = location.state?.username || JSON.parse(localStorage.getItem("user"));
+if (!user || !user.username) {
+  navigate("/", { replace: true });
+}
+
+  // useEffect(() => {
+  //   // If the user is not authenticated, redirect to the login page
+  //   if (!user) {
+  //     navigate("/", { replace: true });
+  //   }
+  // }, [user, navigate]);
+
+  return user ? (
     <div>
       {/* Header */}
       <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
@@ -44,12 +57,15 @@ const AddPetPage = () => {
               Ownership Transfer
             </Button>
             <Button
-              color="inherit"
-              onClick={() => navigate("/", { replace: true })}
-              sx={{ ml: 2 }}
+            color="inherit"
+            onClick={() => {
+              localStorage.removeItem("user");
+              navigate("/", { replace: true });
+            }}
+            sx={{ ml: 2 }}
             >
-              Logout
-            </Button>
+            Logout
+          </Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -58,7 +74,7 @@ const AddPetPage = () => {
       <div className="add-pet-section-container">
         <div className="add-pet-section-text-container">
           <Typography variant="h5" className="greeting-message">
-          Hi {username}, welcome to PetChain! Thank you for choosing us.
+            Hi {user.username}, welcome to PetChain! Thank you for choosing us.
           </Typography>
 
           <h1 className="add-pet-primary-heading">Add Your Beloved Pet</h1>
@@ -96,7 +112,7 @@ const AddPetPage = () => {
         </div>
       </div>
     </div>
-  );
+  ) : null; // Return null to prevent rendering if not authenticated
 };
 
 export default AddPetPage;
