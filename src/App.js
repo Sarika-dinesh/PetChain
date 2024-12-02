@@ -19,6 +19,8 @@ import MainPage from './Components/Profile';
 import Health from './Components/Health';
 import RegisterPet from './Components/RegisterPet'
 import RequireAuth from "./Components/RequireAuth";
+import VetProfile from './Components/VetProfile';
+import InsuranceProfile from './Components/InsuranceProfile';
 
 
 function App() {
@@ -49,6 +51,8 @@ function App() {
         <Route path="/contact-info" element={<Contact />} />
         <Route path = "/services" element={<Services />}  />
         <Route path="/pet-registration" element={<RegisterPet />} />
+        <Route path="/vet-profile" element={<VetProfile />} />
+        <Route path="/insurance-profile" element={<InsuranceProfile/>} />
         <Route element={<RequireAuth />}>
         <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
           <Route path="/claim-insurance" element={<InsuranceClaims />} />

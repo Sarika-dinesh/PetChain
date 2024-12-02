@@ -1,0 +1,81 @@
+/* General Layout */
+.insurance-profile-section-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #f4f4f9;
+    height: 100vh;
+}
+
+.insurance-profile-section-text-container {
+    text-align: center;
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Greeting Message */
+.greeting-message {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+/* Primary Heading */
+.insurance-profile-primary-heading {
+    font-size: 2rem;
+    color: #34495e;
+    margin-bottom: 1rem;
+}
+
+/* Primary Text */
+.insurance-primary-text {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Buttons Section */
+.insurance-profile-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Primary Button Styling */
+.insurance-primary-button {
+    background-color: #3498db;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.insurance-primary-button:hover {
+    background-color: #2980b9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .insurance-profile-section-container {
+        padding: 1rem;
+    }
+
+    .insurance-profile-primary-heading {
+        font-size: 1.75rem;
+    }
+
+    .insurance-primary-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
