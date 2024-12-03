@@ -51,8 +51,6 @@ function App() {
         <Route path="/contact-info" element={<Contact />} />
         <Route path = "/services" element={<Services />}  />
         <Route path="/pet-registration" element={<RegisterPet />} />
-        <Route path="/vet-profile" element={<VetProfile />} />
-        <Route path="/insurance-profile" element={<InsuranceProfile/>} />
         <Route element={<RequireAuth />}>
         <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
           <Route path="/claim-insurance" element={<InsuranceClaims />} />
@@ -62,6 +60,8 @@ function App() {
         <Route path="/owner-transfer" element={<Owner />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/pprofile" element={<MainPage />} />
+        <Route path="/vet-profile" element={<VetProfile />} />
+        <Route path="/insurance-profile" element={<InsuranceProfile/>} />
         </Route>
         </Routes>
       </Router>

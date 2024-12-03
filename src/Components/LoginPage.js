@@ -36,7 +36,7 @@ function LoginPage() {
     });
     setIsSignUpMode(true);
   };
-  
+
   const handleSignInClick = () => {
     setFormData({
       name: "",
@@ -48,6 +48,7 @@ function LoginPage() {
     });
     setIsSignUpMode(false);
   };
+
   const handleRoleChange = (e) => setSelectedRole(e.target.value);
 
   const handleInputChange = (e) => {
@@ -93,7 +94,6 @@ function LoginPage() {
     }
   };
 
-  // API Call: Login User
   const handleSignIn = async (e) => {
     e.preventDefault();
 
@@ -111,19 +111,18 @@ function LoginPage() {
       if (response.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
         alert("Login successful!");
-        navigate("/pprofile", { state: { username: data.user.name } });
+        // Navigate based on the user's role
+        const role = data.user.role;
+        if (role === "vet") {
+          navigate("/vet-profile", { state: { username: data.user.name } });
+        } else if (role === "insurance-provider") {
+          navigate("/insurance-profile", { state: { username: data.user.name } });
+        } else {
+          navigate("/pprofile", { state: { username: data.user.name } });
+        }
       } else {
         alert(data.message || "Login failed!");
       }
-      // if (response.ok) {
-      //   alert("Login successful!");
-      //   console.log("User Details:", data.user);
-      //   console.log("Token:", data.token);
-      //   //redirect to pprofile
-      //   navigate("/pprofile", { state: { username: data.user.name } });
-      // } else {
-      //   alert(data.message || "Login failed!");
-      //}
     } catch (error) {
       console.error("Error during login:", error);
     }

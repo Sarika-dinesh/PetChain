@@ -8,27 +8,26 @@ const VetProfile = () => {
   const location = useLocation();
 
   // Retrieve vet information from state or localStorage
- // const vet = location.state?.vetname || JSON.parse(localStorage.getItem("vet"));
+  const user = location.state?.username || JSON.parse(localStorage.getItem("user") || "{}");
+if (!user || !user.username) {
+  navigate("/", { replace: true });
+  //return null;
+}
 
-  // Redirect if vet information is missing
-//   if (!vet || !vet.vetname) {
-//     navigate("/", { replace: true });
-//     return null; // Prevent further rendering
-//   }
 
-  return (
+  return user ? (
     <div>
       {/* Header */}
       <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">PetChain - Vet Portal</Typography>
           <Box>
-            <Button
-              color="inherit"
-              onClick={() => navigate("/vet-profile")}
-              sx={{ ml: 2 }}
+          <Button
+            color="inherit"
+            onClick={() => navigate("/vet-profile", { state: { username: user.username } })}
+            sx={{ ml: 2 }}
             >
-              My Profile
+            My Profile
             </Button>
             <Button
               color="inherit"
@@ -47,7 +46,7 @@ const VetProfile = () => {
             <Button
               color="inherit"
               onClick={() => {
-                localStorage.removeItem("vet");
+                localStorage.removeItem("user");
                 navigate("/", { replace: true });
               }}
               sx={{ ml: 2 }}
@@ -75,7 +74,7 @@ const VetProfile = () => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default VetProfile;
