@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Button, Container, TextField, Typography, Box, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Import axios for API calls
 
 const RegisterPet = () => {
   const navigate = useNavigate();
@@ -10,23 +11,79 @@ const RegisterPet = () => {
     breed: "",
     age: "",
     gender: "",
-    color: ""
+    color: "",
   });
 
-  const petData = {
-    ownerName: "Sakshi Singh",
-    ownerID: "456"
-  }
+  // const petData = {
+  //   ownerName: "user3",
+  //   ownerID: "OWNER_1732924652972",
+  // };
+  
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log(user);
+
+    if (user) {
+      console.log("CusotmID");
+      console.log(user.id);
+      setPetData({
+        ownerName: user.name,
+        customID: user.id,
+      });
+    } else {
+      console.error("User not logged in or missing from localStorage.");
+    }
+  }, []);
+
+
+  const [petData, setPetData] = useState({
+    ownerName: "",
+    customID: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert("New Pet Added!");
+
+    const token = localStorage.getItem("token");
+    console.log("RegisterPet");
+    console.log(token);
+    if (!token) {
+      alert("You must log in first!");
+      navigate("/login"); // Redirect to login page
+      return;
+    }
+
+    // Prepare data for the API
+    const payload = {
+      name: formData.petName,
+      breed: formData.breed,
+      age: formData.age,
+      gender: formData.gender,
+      color: formData.color,
+    };
+
+    try {
+      // Send POST request to the backend API
+      console.log("POST request sent");
+      const response = await axios.post("http://localhost:3000/api/register/pets", payload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token for authentication
+        },
+        
+      });
+
+      console.log(response.data);
+      alert("New Pet Added Successfully!");
+      navigate("/pprofile"); // Redirect to profile page
+    } catch (error) {
+      console.error("Error registering pet:", error);
+      alert(error.response?.data?.message || "Failed to register the pet.");
+    }
   };
 
   return (
@@ -121,14 +178,14 @@ const RegisterPet = () => {
 
             <Grid container spacing={2}>
               {[
-                { name: "ownerName", label: "Owner's Name" },
-                { name: "ownerID", label: "Owner's ID" },
+                { name: "ownerName", label: "Owner's Name", value: petData.ownerName },
+                { name: "ownerID", label: "", value: petData.customID },
               ].map((field, idx) => (
                 <Grid item xs={12} sm={6} key={idx}>
                   <TextField
                     fullWidth
                     label={field.label}
-                    value={petData[field.name]}
+                    value={field.value}
                     variant="outlined"
                     margin="normal"
                     InputProps={{

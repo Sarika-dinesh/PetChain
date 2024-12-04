@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import './Login.css';
+import './Login.css'; // Custom styling
 import DogWalk from '../Assets/dogwalk.svg';
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const navigate = useNavigate();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(""); // Track the selected role
+  const [selectedRole, setSelectedRole] = useState(""); // Track selected role
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -108,9 +108,16 @@ function LoginPage() {
       });
 
       const data = await response.json();
+      console.log("data-token");
+      console.log(data.token);
       if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(data.user));
+        // Store token in localStorage
+        localStorage.setItem("token", data.token);
+        console.log(data.token);
+        localStorage.setItem("user", JSON.stringify(data.user)); // Store user data
+
         alert("Login successful!");
+
         // Navigate based on the user's role
         const role = data.user.role;
         if (role === "vet") {
