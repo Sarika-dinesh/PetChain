@@ -98,8 +98,10 @@ const RegisterPet = () => {
       console.log(response.data.pet);
 
       // Save pet information in localStorage
-      if (response.ok) {
-      localStorage.setItem("pet", JSON.stringify(response.data.pet));}
+      console.log("removed response ok")
+      localStorage.setItem("pet", JSON.stringify(response.data.pet));
+      const petData = JSON.parse(localStorage.getItem("pet"))
+      console.log(petData)
 
       alert("New Pet Added Successfully!");
       navigate("/pprofile"); // Redirect to profile page

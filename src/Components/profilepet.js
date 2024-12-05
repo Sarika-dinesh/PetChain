@@ -25,7 +25,7 @@ const PetProfile = () => {
 
 
   const [petData, setPetData] = useState({
-    name: "",
+    petName: "",
     ID: "",
     gender: "",
     breed: "",
@@ -54,7 +54,7 @@ const PetProfile = () => {
         }
       }
       console.log("New data");
-      console.log(storedPet);
+      console.log(pet);
 
       try {
         // If user and pet data are available in localStorage, use them
@@ -68,13 +68,13 @@ const PetProfile = () => {
         if (pet) {
           setPetData({
             petName: pet.name,
-            petID: pet.Id,
+            ID: pet.petId,
             breed: pet.breed,
             age: pet.age,
             color: pet.color,
             gender: pet.gender,
             additonalInfo: pet.additionalInfo,
-            pitcure: pet.picture
+            picture: pet.picture
           });
         }
       } catch (error) {
@@ -229,7 +229,7 @@ const PetProfile = () => {
             <TextField
               fullWidth
               label="Pet ID"
-              value={petData.petID}
+              value={petData.ID}
               variant="outlined"
               margin="normal"
               InputProps={{
