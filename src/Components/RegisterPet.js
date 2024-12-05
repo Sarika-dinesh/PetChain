@@ -14,6 +14,7 @@ const RegisterPet = () => {
     age: "",
     gender: "",
     color: "",
+    picture: "",
   });
 
   // const petData = {
@@ -80,6 +81,7 @@ const RegisterPet = () => {
       age: formData.age,
       gender: formData.gender,
       color: formData.color,
+      picture: formData.picture,
     };
 
     try {
