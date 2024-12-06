@@ -37,11 +37,21 @@ const AddInsurancePage = () => {
             </Button>
             <Button
               color="inherit"
-              onClick={() => navigate("/owner-transfer")}
+              onClick={() => navigate("/ownership-transfer")}
               sx={{ ml: 2 }}
             >
               Ownership Transfer
             </Button>
+            <Button
+            color="inherit"
+            onClick={() => {
+              localStorage.removeItem("user");
+              navigate("/", { replace: true });
+            }}
+            sx={{ ml: 2 }}
+            >
+            Logout
+          </Button>
           </Box>
         </Toolbar>
       </AppBar>

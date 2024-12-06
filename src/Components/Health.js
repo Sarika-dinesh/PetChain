@@ -513,7 +513,7 @@ const PetHealth = () => {
             </Button>
             <Button
               color="inherit"
-              onClick={() => navigate("/owner-transfer")}
+              onClick={() => navigate("/ownership-transfer")}
               sx={{ ml: 2 }}
             >
               Ownership Transfer
