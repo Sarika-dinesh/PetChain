@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -11,6 +11,12 @@ import {
   Input,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const API_BASE_URL = "http://localhost:3000/api"; 
+
+
+
 
 const PetHealth = () => {
   const navigate = useNavigate();
@@ -23,18 +29,34 @@ const PetHealth = () => {
     file: null,
   });
 
+   
+  // const [vaccinationRecords, setVaccinationRecords] = useState([
+  //   {
+  //     vaccinationDate: "2023-08-15",
+  //     vaccineType: "Rabies Vaccine",
+  //     nextDueDate: "2024-08-15",
+  //     file: { name: "rabies-vaccine.pdf" },
+  //   },
+  //   {
+  //     vaccinationDate: "2023-05-10",
+  //     vaccineType: "Distemper Vaccine",
+  //     nextDueDate: "2024-05-10",
+  //     file: { name: "distemper-vaccine.pdf" },
+  //   },
+  // ]);
+
   const [vaccinationRecords, setVaccinationRecords] = useState([
     {
-      vaccinationDate: "2023-08-15",
-      vaccineType: "Rabies Vaccine",
-      nextDueDate: "2024-08-15",
-      file: { name: "rabies-vaccine.pdf" },
+      vaccinationDate: "",
+      vaccineType: "",
+      nextDueDate: "",
+      file: { name: "" },
     },
     {
-      vaccinationDate: "2023-05-10",
-      vaccineType: "Distemper Vaccine",
-      nextDueDate: "2024-05-10",
-      file: { name: "distemper-vaccine.pdf" },
+      vaccinationDate: "",
+      vaccineType: "",
+      nextDueDate: "",
+      file: { name: "" },
     },
   ]);
 
@@ -42,23 +64,58 @@ const PetHealth = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [filePreview, setFilePreview] = useState(null);
   const [allergies, setAllergies] = useState([
-    "Peanut Allergy",
-    "Dust Allergy",
+    "",
+    // "Peanut Allergy",
+    // "Dust Allergy",
   ]);
   const [pastTreatments, setPastTreatments] = useState([
-    "Treated for ear infection",
-    "Vaccination against flu",
+    "",
+    // "Treated for ear infection",
+    // "Vaccination against flu",
   ]);
   const [minorIllnessRecords, setMinorIllnessRecords] = useState([
-    "Cough",
-    "Fever",
+    "",
   ]);
 
-  const petData = {
-    name: "Coco",
-    petId: "12345",
-  };
+  // const petData = {
+  //   name: "Coco",
+  //   petId: "12345",
+  // };
+  const [petData, setPetData] = useState({
+    name: "",
+    ID: "",
+  });  
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const storedPet = localStorage.getItem("pet");
+      let pet = null;
+      if (storedPet) {
+        try {
+          pet = JSON.parse(storedPet);
+        } catch (error) {
+          localStorage.removeItem("pet");
+          console.error("Error parsing pet data from localStorage:", error);
+        }
+      }
+      console.log("New data pet Health");
+      console.log(pet); //working
+  
+      try {
+        if (pet) {
+          setPetData({
+            petName: pet.name,
+            petID: pet.petId,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+  
   const formatDate = (date) => {
     const d = new Date(date);
     const month = (d.getMonth() + 1).toString().padStart(2, "0");
@@ -72,6 +129,169 @@ const PetHealth = () => {
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
+
+  const handleIllnessRecords = async () => {
+    const petId = petData.petID; // Retrieve pet ID dynamically
+    const pname = petData.petName; // Retrieve pet name dynamically
+    const updatedMinorIllnessRecords = [
+      ...minorIllnessRecords,
+      formData.minorIllness,
+    ]; // Merge the new minor illness with existing ones
+  
+    try {
+      console.log("Starting handleIllnessRecords...");
+      console.log("petId:", petId);
+      console.log("name:", pname);
+      console.log("Updated Minor Illness Records:", updatedMinorIllnessRecords);
+  
+      const formData = new FormData();
+      formData.append("petId", petId);
+      formData.append("name", pname);
+      updatedMinorIllnessRecords.forEach((illness, index) => {
+        formData.append(`minorIllnessRecords[${index}]`, illness);
+      });
+  
+      // Log FormData contents
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+  
+      // Send POST request to update minor illness records in the database
+      const response = await axios.post(
+        "http://localhost:3000/api/pet-health/save",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
+      console.log("Response data:", response.data);
+  
+      // Update frontend state with the new minor illness records
+      setMinorIllnessRecords(updatedMinorIllnessRecords);
+      setFormData({ ...formData, minorIllness: "" }); // Clear the input field
+    } catch (error) {
+      if (error.response) {
+        console.error("Server responded with an error:", error.response.data);
+        console.error("Status code:", error.response.status);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up the request:", error.message);
+      }
+    }
+  };
+  
+  
+
+  const handleChangeAllergies = async () => {
+    const petId = petData.petID; // Retrieve the pet ID dynamically
+    const pname = petData.petName; // Retrieve pet name dynamically
+    const updatedAllergies = [...allergies, formData.allergies]; // Merge new allergy with existing ones
+  
+    try {
+      console.log("Starting handleChangeAllergies...");
+      console.log("petId:", petId);
+      console.log("name:", pname);
+      console.log("Updated Allergies:", updatedAllergies);
+  
+      const formData = new FormData();
+      formData.append("petId", petId);
+      formData.append("name", pname);
+      updatedAllergies.forEach((allergy, index) => {
+        formData.append(`allergies[${index}]`, allergy);
+      });
+  
+      // Log FormData contents
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+  
+      // Send POST request to update allergies in the database
+      const response = await axios.post(
+        "http://localhost:3000/api/pet-health/save",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
+      console.log("Response data:", response.data);
+  
+      // Update frontend state with the new allergy list
+      setAllergies(updatedAllergies);
+      setFormData({ ...formData, allergies: "" }); // Clear the input field
+    } catch (error) {
+      if (error.response) {
+        console.error("Server responded with an error:", error.response.data);
+        console.error("Status code:", error.response.status);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up the request:", error.message);
+      }
+    }
+  };
+  
+  
+  const handlePastTreatments = async () => {
+    const petId = petData.petID; // Retrieve the pet ID dynamically
+    const pname = petData.petName; // Retrieve pet name dynamically
+    const updatedPastTreatments = [
+      ...pastTreatments,
+      formData.pastTreatment,
+    ]; // Merge the new treatment with existing ones
+  
+    try {
+      console.log("Starting handlePastTreatments...");
+      console.log("petId:", petId);
+      console.log("name:", pname);
+      console.log("Updated Past Treatments:", updatedPastTreatments);
+  
+      const formData = new FormData();
+      formData.append("petId", petId);
+      formData.append("name", pname);
+      updatedPastTreatments.forEach((treatment, index) => {
+        formData.append(`pastTreatments[${index}]`, treatment);
+      });
+  
+      // Log FormData contents
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+  
+      // Send POST request to update past treatments in the database
+      const response = await axios.post(
+        "http://localhost:3000/api/pet-health/save",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
+      console.log("Response data:", response.data);
+  
+      // Update frontend state with the new past treatments
+      setPastTreatments(updatedPastTreatments);
+      setFormData({ ...formData, pastTreatment: "" }); // Clear the input field
+    } catch (error) {
+      if (error.response) {
+        console.error("Server responded with an error:", error.response.data);
+        console.error("Status code:", error.response.status);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up the request:", error.message);
+      }
+    }
+  };
+  
 
   const handleAddIllness = () => {
     if (formData.minorIllness.trim()) {
@@ -120,34 +340,75 @@ const PetHealth = () => {
 
     if (!formData.vaccineType.trim())
       newErrors.vaccineType = "Vaccine type is required";
-
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      setVaccinationRecords([
-        ...vaccinationRecords,
-        {
-          vaccinationDate: formData.vaccinationDate,
-          vaccineType: formData.vaccineType,
-          nextDueDate: formData.nextDueDate,
-          file: formData.file,
-        },
-      ]);
-      setFormData({
-        vaccinationDate: "",
-        vaccineType: "",
-        nextDueDate: "",
-        allergies: "",
-        file: null,
-      });
-      setShowConfirmation(true);
+      // setVaccinationRecords([
+      //   ...vaccinationRecords,
+      //   {
+      //     vaccinationDate: formData.vaccinationDate,
+      //     vaccineType: formData.vaccineType,
+      //     nextDueDate: formData.nextDueDate,
+      //     file: formData.file,
+      //   },
+      // ]);
+      // setFormData({
+      //   vaccinationDate: "",
+      //   vaccineType: "",
+      //   nextDueDate: "",
+      //   allergies: "",
+      //   file: null,
+      // });
+      // setShowConfirmation(true);
+      try {
+        
+        const formDataToSend = new FormData();
+      
+       //these are the first field
+        formDataToSend.append("petId", "PET_1733434125508");
+        formDataToSend.append("name", "Cuddles");
+      
+        formDataToSend.append("vaccinationRecords[0][vaccinationDate]", formData.vaccinationDate);
+        formDataToSend.append("vaccinationRecords[0][vaccineType]", formData.vaccineType);
+        formDataToSend.append("vaccinationRecords[0][nextDueDate]", formData.nextDueDate);
+      
+        formDataToSend.append("file", formData.file);
+      
+        // Send the request using axios with FormData
+        const response = await axios.post(`${API_BASE_URL}/pet-health/save`, formDataToSend, {
+          headers: {
+            "Content-Type": "multipart/form-data", // Set the correct content type for FormData
+          },
+        });
+        
+        // Update the state with the new vaccination record
+        setVaccinationRecords([...vaccinationRecords, response.data]);
+      
+        // Clear the form data after successful submission
+        setFormData({
+          vaccinationDate: "",
+          vaccineType: "",
+          nextDueDate: "",
+          allergies: "",
+          file: null,
+        });
+      
+        // Show confirmation message or any UI update for success
+        setShowConfirmation(true);
+      } catch (error) {
+        console.error("Error adding vaccination record:", error);
+      }
+      
     }
+  
+
+  
   };
 
   return (
@@ -207,10 +468,10 @@ const PetHealth = () => {
 
           <Box sx={{ mb: 3 }}>
             <Typography>
-              <strong>Pet's Name:</strong> {petData.name}
+              <strong>Pet's Name:</strong> {petData.petName}
             </Typography>
             <Typography>
-              <strong>Pet ID:</strong> {petData.petId}
+              <strong>Pet ID:</strong> {petData.petID}
             </Typography>
           </Box>
 
@@ -363,28 +624,35 @@ const PetHealth = () => {
             Allergies
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-            <TextField
-              fullWidth
-              name="allergies"
-              label="Add Allergy"
-              value={formData.allergies}
-              onChange={handleChange}
-              placeholder="e.g., Peanut Allergy"
-              size="small"
-              sx={{ mr: 2 }}
-            />
-            <Button
-              variant="contained"
-              onClick={() => {
-                if (formData.allergies.trim()) {
-                  setAllergies([...allergies, formData.allergies]);
-                  setFormData({ ...formData, allergies: "" });
+          <TextField
+            fullWidth
+            name="allergies"
+            label="Add Allergy"
+            value={formData.allergies}
+            onChange={(e) => {
+              setFormData({ ...formData, allergies: e.target.value });
+              setErrors({ ...errors, allergies: "" }); // Reset error state for allergies if needed
+            }}
+            placeholder="e.g., Peanut Allergy"
+            size="small"
+            sx={{ mr: 2 }}
+          />
+          <Button
+            variant="contained"
+            onClick={async () => {
+              if (formData.allergies.trim()) {
+                console.log("Adding new allergy...");
+                try {
+                  await handleChangeAllergies();
+                } catch (error) {
+                  console.error("Error updating allergies:", error);
                 }
-              }}
-              sx={{ bgcolor: "orange" }}
-            >
-              Add
-            </Button>
+              }
+            }}
+            sx={{ bgcolor: "orange" }}
+          >
+            Add
+          </Button>
           </Box>
           {allergies.length > 0 && (
             <Box sx={{ mb: 3 }}>
@@ -418,13 +686,14 @@ const PetHealth = () => {
             />
             <Button
               variant="contained"
-              onClick={() => {
+              onClick={async () => {
                 if (formData.pastTreatment.trim()) {
-                  setPastTreatments([
-                    ...pastTreatments,
-                    formData.pastTreatment,
-                  ]);
-                  setFormData({ ...formData, pastTreatment: "" });
+                  console.log("Adding new past treatment...");
+                  try {
+                    await handlePastTreatments();
+                  } catch (error) {
+                    console.error("Error updating past treatments:", error);
+                  }
                 }
               }}
               sx={{ bgcolor: "orange" }}
@@ -464,13 +733,14 @@ const PetHealth = () => {
             />
             <Button
               variant="contained"
-              onClick={() => {
+              onClick={async () => {
                 if (formData.minorIllness.trim()) {
-                  setMinorIllnessRecords([
-                    ...minorIllnessRecords,
-                    formData.minorIllness,
-                  ]);
-                  setFormData({ ...formData, minorIllness: "" });
+                  console.log("Adding new minor illness...");
+                  try {
+                    await handleIllnessRecords();
+                  } catch (error) {
+                    console.error("Error updating minor illness records:", error);
+                  }
                 }
               }}
               sx={{ bgcolor: "orange" }}
