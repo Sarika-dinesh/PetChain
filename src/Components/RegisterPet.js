@@ -78,6 +78,7 @@ const RegisterPet = () => {
       });
 
       console.log(response.data);
+      localStorage.setItem("pet", JSON.stringify(response.data.pet));
       alert("New Pet Added Successfully!");
       navigate("/pprofile"); // Redirect to profile page
     } catch (error) {

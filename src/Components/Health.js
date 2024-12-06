@@ -52,35 +52,13 @@ const PetHealth = () => {
       nextDueDate: "",
       file: { name: "" },
     },
-    {
-      vaccinationDate: "",
-      vaccineType: "",
-      nextDueDate: "",
-      file: { name: "" },
-    },
   ]);
 
   const [errors, setErrors] = useState({});
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [filePreview, setFilePreview] = useState(null);
-  const [allergies, setAllergies] = useState([
-    "",
-    // "Peanut Allergy",
-    // "Dust Allergy",
-  ]);
-  const [pastTreatments, setPastTreatments] = useState([
-    "",
-    // "Treated for ear infection",
-    // "Vaccination against flu",
-  ]);
-  const [minorIllnessRecords, setMinorIllnessRecords] = useState([
-    "",
-  ]);
-
-  // const petData = {
-  //   name: "Coco",
-  //   petId: "12345",
-  // };
+  const [allergies, setAllergies] = useState([]);
+  const [minorIllnessRecords, setMinorIllnessRecords] = useState([]);
   const [petData, setPetData] = useState({
     name: "",
     ID: "",
@@ -130,9 +108,37 @@ const PetHealth = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
+  const [pastTreatments, setPastTreatments] = useState([]); // Initial state as empty array
+
+  // Fetch pet health data from the backend and populate 
+  const fetchPetHealth = async () => {
+    try {
+
+      const petId = petData.petID; // Retrieve petId dynamically after login
+      console.log(petId)
+      const response = await axios.get(`http://localhost:3000/api/pet-health/${petId}`);
+      console.log("Fetched Pet Health Data:", response.data);
+  
+      // Update state with pastTreatments from the response
+      setVaccinationRecords(response.data.vaccinationRecords || []);
+      setPastTreatments(response.data.pastTreatments || []);
+      setMinorIllnessRecords(response.data.minorIllnessRecords || []);
+      setAllergies(response.data.allergies || []);
+    } catch (error) {
+      console.error("Error fetching pet health data:", error.response ? error.response.data : error.message);
+    }
+  };
+  
+  // Fetch data after user logs in
+  useEffect(() => {
+    if (petData?.petID) {
+      fetchPetHealth();
+    }
+  }, [petData]); 
+
   const handleIllnessRecords = async () => {
-    const petId = petData.petID; // Retrieve pet ID dynamically
-    const pname = petData.petName; // Retrieve pet name dynamically
+    const petId = petData.petID; 
+    const pname = petData.petName; 
     const updatedMinorIllnessRecords = [
       ...minorIllnessRecords,
       formData.minorIllness,
@@ -302,15 +308,11 @@ const PetHealth = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setFormData({ ...formData, file });
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFilePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+    if (file) {
+      setFormData({ ...formData, file });
     }
   };
+  
 
   // const handleShareWithVet = () => {
   //   if (!formData.vetId.trim()) {
@@ -343,6 +345,77 @@ const PetHealth = () => {
     return newErrors;
   };
 
+  const handleVaccinationRecords = async (e) => {
+    //const handleAddVaccinationRecord = async () => {
+      const petId = petData.petID; // Retrieve the pet ID dynamically
+      const pname = petData.petName; // Retrieve pet name dynamically
+      const updatedVaccinationRecords = [
+        ...vaccinationRecords,
+        {
+          vaccinationDate: formData.vaccinationDate,
+          vaccineType: formData.vaccineType,
+          nextDueDate: formData.nextDueDate,
+          file: formData.file,
+        },
+      ]; // Merge new record with existing ones
+    
+      try {
+        console.log("Starting handleAddVaccinationRecord...");
+        console.log("petId:", petId);
+        console.log("name:", pname);
+        console.log("Updated Vaccination Records:", updatedVaccinationRecords);
+    
+        const formData = new FormData();
+        formData.append("petId", petId);
+        formData.append("name", pname);
+        updatedVaccinationRecords.forEach((record, index) => {
+          formData.append(`vaccinationRecords[${index}][vaccinationDate]`, record.vaccinationDate);
+          formData.append(`vaccinationRecords[${index}][vaccineType]`, record.vaccineType);
+          formData.append(`vaccinationRecords[${index}][nextDueDate]`, record.nextDueDate);
+          if (record.file) {
+            formData.append(`vaccinationRecords[${index}][file]`, record.file);
+          }
+        });
+    
+        for (let pair of formData.entries()) {
+          console.log(pair[0] + ": " + pair[1]);
+        }
+        console.log("CHeck here!!!! before POST --ISSUE HERE---HELP")
+        console.log(formData)
+        // Send POST request to update vaccination records in the database
+        const response = await axios.post(
+          "http://localhost:3000/api/pet-health/save",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("CHeck here!!!! After POST ")
+        console.log("Response data:", response.data);
+    
+        // Update frontend state with the new vaccination record list
+        setVaccinationRecords(updatedVaccinationRecords);
+        setFormData({
+          ...formData,
+          vaccinationDate: "",
+          vaccineType: "",
+          nextDueDate: "",
+          file: null,
+        }); // Clear the input fields
+      } catch (error) {
+        if (error.response) {
+          console.error("Server responded with an error:", error.response.data);
+          console.error("Status code:", error.response.status);
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+        } else {
+          console.error("Error setting up the request:", error.message);
+        }
+      }
+    };
+    
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -378,7 +451,7 @@ const PetHealth = () => {
         formDataToSend.append("vaccinationRecords[0][vaccineType]", formData.vaccineType);
         formDataToSend.append("vaccinationRecords[0][nextDueDate]", formData.nextDueDate);
       
-        formDataToSend.append("file", formData.file);
+        //formDataToSend.append("file", formData.file);
       
         // Send the request using axios with FormData
         const response = await axios.post(`${API_BASE_URL}/pet-health/save`, formDataToSend, {
@@ -478,7 +551,7 @@ const PetHealth = () => {
           <Typography variant="h6" gutterBottom>
             Vaccination Record
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+          <Box component="form" sx={{ mt: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={3}>
                 <TextField
@@ -543,14 +616,31 @@ const PetHealth = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button
+              <Button
+              variant="contained"
+              fullWidth
+              onClick={async () => {
+                if (formData.vaccinationDate.trim()) {
+                  console.log("Adding new past records...");
+                  try {
+                    await handleVaccinationRecords();
+                  } catch (error) {
+                    console.error("Error updating past records:", error);
+                  }
+                }
+              }}
+              sx={{ bgcolor: "orange" }}
+            >
+              Add Record
+            </Button>
+                {/* <Button
                   type="submit"
                   variant="contained"
                   fullWidth
                   sx={{ bgcolor: "orange" }}
                 >
                   Add Record
-                </Button>
+                </Button> */}
               </Grid>
             </Grid>
           </Box>
@@ -569,56 +659,43 @@ const PetHealth = () => {
           <Typography variant="h6" gutterBottom sx={{ mt: 3 }}>
             Uploaded Records
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box sx={{ width: "23%" }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                Vaccination Date
-              </Typography>
+          {vaccinationRecords.length > 0 && (
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
+              Vaccination Records:
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 3, // Adjust the gap between items as needed
+              }}
+            >
               {vaccinationRecords.map((record, idx) => (
-                <Typography key={idx} sx={{ textAlign: "left" }}>
-                  {formatDate(record.vaccinationDate)}{" "}
-                  {/* Use formatDate function here */}
-                </Typography>
-              ))}
-            </Box>
-            <Box sx={{ width: "23%" }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                Vaccine Type
-              </Typography>
-              {vaccinationRecords.map((record, idx) => (
-                <Typography key={idx} sx={{ textAlign: "left" }}>
-                  {record.vaccineType}
-                </Typography>
-              ))}
-            </Box>
-            <Box sx={{ width: "23%" }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                Next Due Date
-              </Typography>
-              {vaccinationRecords.map((record, idx) => (
-                <Typography key={idx} sx={{ textAlign: "left" }}>
-                  {formatDate(record.nextDueDate)}{" "}
-                  {/* Use formatDate function here */}
-                </Typography>
-              ))}
-            </Box>
-            <Box sx={{ width: "23%" }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                File
-              </Typography>
-              {vaccinationRecords.map((record, idx) => (
-                <Typography key={idx} sx={{ textAlign: "left" }}>
-                  {record.file.name}
-                </Typography>
+                <Box
+                  key={idx}
+                  sx={{
+                    border: "1px solid #ddd",
+                    borderRadius: "8px",
+                    p: 2,
+                    minWidth: "250px", // Adjust width for each card
+                  }}
+                >
+                  <Typography>- Vaccination Date: {record.vaccinationDate}</Typography>
+                  <Typography>  Vaccine Type: {record.vaccineType}</Typography>
+                  <Typography>  Next Due Date: {record.nextDueDate}</Typography>
+                  {record.file && (
+                    <Typography>
+                      <a href={record.file} target="_blank" rel="noopener noreferrer">
+                        View File
+                      </a>
+                    </Typography>
+                  )}
+                </Box>
               ))}
             </Box>
           </Box>
+        )}
 
           <Typography variant="h6" gutterBottom sx={{ mt: 3 }}>
             Allergies

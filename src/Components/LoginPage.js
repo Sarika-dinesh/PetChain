@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 function LoginPage() {
   const navigate = useNavigate();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(""); // Track selected role
+  const [selectedRole, setSelectedRole] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,12 +18,6 @@ function LoginPage() {
     additionalInfo: "",
   });
 
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) {
-      navigate("/pprofile", { state: { username: storedUser.name } });
-    }
-  }, [navigate]);
 
   const handleSignUpClick = () => {
     setFormData({
