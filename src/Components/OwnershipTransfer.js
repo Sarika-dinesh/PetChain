@@ -198,11 +198,21 @@ const OwnershipTransfer = () => {
               boxShadow: 3,
             }}
           >
+            <Box sx={{ paddingLeft: 5, paddingRight:5,}}>
             <Typography variant="h4" align="center" gutterBottom>
               Ownership Transfer
             </Typography>
 
-            <Typography variant="h6" gutterBottom sx={{ mt: 2 }} style={{ textDecoration: "underline" }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                padding: "0 0",
+                borderBottom: "1px solid black",
+                marginTop: 3,
+              }}
+            >
               Pet Information
             </Typography>
             <Typography>
@@ -221,7 +231,16 @@ const OwnershipTransfer = () => {
               <strong>Breed:</strong> {ownershipDetails.pets[0].breed}
             </Typography>
 
-            <Typography variant="h6" gutterBottom sx={{ mt: 2 }} style={{ textDecoration: "underline" }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                padding: "0 0",
+                borderBottom: "1px solid black",
+                marginTop: 3,
+              }}
+            >
               Owner's Information
             </Typography>
             <Box>
@@ -231,10 +250,18 @@ const OwnershipTransfer = () => {
               <Typography>
                 <strong>Email:</strong> {ownershipDetails.owner.email}
               </Typography>
-
             </Box>
 
-            <Typography variant="h6" gutterBottom style={{ textDecoration: "underline" }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                padding: "0 0",
+                borderBottom: "1px solid black",
+                marginTop: 3,
+              }}
+            >
               New Owner's Information
             </Typography>
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
@@ -243,8 +270,6 @@ const OwnershipTransfer = () => {
                   { name: "name", label: "Name" },
                   { name: "email", label: "Email" },
                   { name: "address", label: "Address" },
-                  { name: "city", label: "City" },
-                  { name: "state", label: "State" },
                   { name: "zipcode", label: "Zip Code" },
                 ].map((field, idx) => (
                   <Grid item xs={12} sm={6} key={idx}>
@@ -264,6 +289,7 @@ const OwnershipTransfer = () => {
                   </Button>
                 </Grid>
               </Grid>
+            </Box>
             </Box>
           </Container>
         )}
