@@ -47,10 +47,10 @@ const PetHealth = () => {
 
   const [vaccinationRecords, setVaccinationRecords] = useState([
     {
-      vaccinationDate: "",
-      vaccineType: "",
-      nextDueDate: "",
-      file: { name: "" },
+      vaccinationDate: "2023-08-15",
+      vaccineType: "Rabies Vaccine",
+      nextDueDate: "2024-08-15",
+      file: { name: "rabies-vaccine.pdf" },
     },
   ]);
 
@@ -518,6 +518,16 @@ const PetHealth = () => {
             >
               Ownership Transfer
             </Button>
+            <Button
+            color="inherit"
+            onClick={() => {
+              localStorage.removeItem("user");
+              navigate("/", { replace: true });
+            }}
+            sx={{ ml: 2 }}
+            >
+            Logout
+          </Button>
           </Box>
         </Toolbar>
       </AppBar>
