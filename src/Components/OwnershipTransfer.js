@@ -141,13 +141,13 @@ const OwnershipTransfer = () => {
         {
           transferId: response.data.transferId,
           petName: ownershipDetails?.pets[0]?.name,
-          status: "Email Sent",
+          status: "Pending approval from New Owner",
         },
       ]);
-      setOpenDialog(true); // Open dialog
+      setOpenDialog(true); 
     } catch (error) {
       console.error("Failed to initiate ownership transfer:", error);
-      alert("An error occurred while initiating the transfer.");
+      alert(error.response?.data?.message || "An error occurred.");
     }
   };
   

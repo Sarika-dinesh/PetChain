@@ -14,6 +14,7 @@ import InsuranceClaims from './Components/InsuranceClaims';
 import AddInsurancePage from './Components/AddInsurance';
 import AddInsuranceClaim from './Components/AddInsurancePage';
 import OwnershipTransfer from './Components/OwnershipTransfer';
+import ApproveTransfer from "./Components/ApproveTransfer";
 import Profile from './Components/profilepet';
 import MainPage from './Components/Profile';
 import Health from './Components/Health';
@@ -57,6 +58,7 @@ function App() {
         <Route path="/add-insurance" element={<AddInsurancePage />} />
         <Route path="/insurance" element={<AddInsuranceClaim />} />
         <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
+        <Route path="/approve-transfer" element={<ApproveTransfer />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/pprofile" element={<MainPage />} />
         <Route path="/vet-profile" element={<VetProfile />} />
