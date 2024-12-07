@@ -102,7 +102,6 @@ const RegisterPet = () => {
       localStorage.setItem("pet", JSON.stringify(response.data.pet));
       const petData = JSON.parse(localStorage.getItem("pet"))
       console.log(petData)
-
       alert("New Pet Added Successfully!");
       navigate("/pprofile"); // Redirect to profile page
     } catch (error) {

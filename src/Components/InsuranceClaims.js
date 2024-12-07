@@ -91,37 +91,47 @@ const InsuranceClaimPage = () => {
     >
       {/* Header */}
       <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">PetChain</Typography>
           <Box>
             <Button
               color="inherit"
-              onClick={() => navigate('/pprofile')}
-              sx={{ mx: 1 }}
+              onClick={() => navigate("/pprofile")}
+              sx={{ ml: 2 }}
             >
               My Profile
             </Button>
             <Button
               color="inherit"
-              onClick={() => navigate('/insurance')}
-              sx={{ mx: 1 }}
+              onClick={() => navigate("/insurance")}
+              sx={{ ml: 2 }}
             >
               Insurance
             </Button>
             <Button
               color="inherit"
-              onClick={() => navigate('/pet-health')}
-              sx={{ mx: 1 }}
+              onClick={() => navigate("/pet-health")}
+              sx={{ ml: 2 }}
             >
               Pet Health
             </Button>
             <Button
               color="inherit"
-              onClick={() => navigate('/owner-transfer')}
-              sx={{ mx: 1 }}
+              onClick={() => navigate("/ownership-transfer")}
+              sx={{ ml: 2 }}
             >
               Ownership Transfer
             </Button>
+            <Button
+            color="inherit"
+            onClick={() => {
+              localStorage.removeItem("user");
+              navigate("/", { replace: true });
+            }}
+            sx={{ ml: 2 }}
+            >
+            Logout
+          </Button>
           </Box>
         </Toolbar>
       </AppBar>

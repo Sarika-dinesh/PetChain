@@ -5,7 +5,7 @@
   position: relative;
   min-height: calc(100vh - 64px); /* Adjust for header height */
   background-color: #f8f8f8;
-  padding-top: 64px; /* Push content below header */
+  padding-top: 30px; /* Push content below header */
 }
 
 .add-insurance-background-image-container img {
@@ -27,6 +27,7 @@
 .add-insurance-section-text-container {
   max-width: 600px;
   padding: 20px;
+  margin-right: 15%;
 }
 
 .primary-insurance-subheading {

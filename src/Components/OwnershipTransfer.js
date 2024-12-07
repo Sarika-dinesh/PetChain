@@ -1,437 +1,382 @@
-import React, { useState } from 'react';
-import { Typography } from 'antd';
-import './PetProfile.css';
+import React, { useState, useEffect } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Box,
+  Typography,
+  Container,
+  Grid,
+  TextField,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-
-const { Title, Text } = Typography;
-
-const petData = {
-  name: 'Coco',
-  gender: 'Female',
-  age: '2',
-  breed: 'Cocker Spaniel',
-  ownerName: 'Sakshi Singh',
-  emailid: 'skhsingh@ucdavis.edu',
-  phoneNumber: '(530) 123-8765',
-  owneraddress: '403 Russell Park, Apt #1, Davis, CA 95616',
-}
-
-function OwnershipTransfer() {
+const OwnershipTransfer = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    id: '',
-    address: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    phone: '',
+    name: "",
+    email: "",
+    id: "",
+    address: "",
+    city: "",
+    state: "",
+    zipcode: "",
   });
+  const [ownershipDetails, setOwnershipDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [transfers, setTransfers] = useState([]);
 
-  const [errors, setErrors] = useState({
-    name: '',
-    email: '',
-    id: '',
-    address: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    phone: '',
-  });
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.id) {
+      console.error("User not found or missing custom ID.");
+      navigate("/", { replace: true });
+    } else {
+      setOwnershipDetails((prevState) => ({
+        ...prevState,
+        owner: {
+          owner_name: user.name,
+          ownerId: user.id,
+          email: user.email,
+        },
+      }));
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    const storedPet = localStorage.getItem("pet");
+    if (storedPet) {
+      try {
+        const pet = JSON.parse(storedPet);
+        setOwnershipDetails((prevState) => ({
+          ...prevState,
+          pets: [pet],
+        }));
+        setError(false);
+      } catch (error) {
+        console.error("Error parsing pet data from localStorage:", error);
+        setError(true);
+      }
+    } else {
+      const fetchFromBackend = async () => {
+        try {
+          const user = JSON.parse(localStorage.getItem("user"));
+          const response = await axios.get(`/api/pets/getPet/${user.id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          setOwnershipDetails(response.data);
+          setError(false);
+        } catch (error) {
+          console.error("Failed to fetch ownership details:", error);
+          setError(true);
+        }
+      };
+      fetchFromBackend();
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    const fetchTransfers = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user || !user.email) {
+          console.error("User not found or missing email.");
+          return;
+        }
+
+        const response = await axios.get(
+          `http://localhost:3000/api/transfer/${user.email}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        setTransfers(response.data);
+      } catch (error) {
+        console.error("Failed to fetch transfer requests:", error);
+      }
+    };
+
+    fetchTransfers();
+  }, []);
+
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-
-    // For numeric fields: Ensure input is a valid number sequence
-    if ((id === 'id' || id === 'phone' || id === 'zip') && value !== '' && !/^\d+$/.test(value)) {
-      return;
-    }
-
-    setFormData({ ...formData, [id]: value });
-    setErrors({ ...errors, [id]: '' }); // Clear error on valid input
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email address is required';
-    if (!formData.id.trim() || !/^\d+$/.test(formData.id)) newErrors.id = 'ID must be a number';
-    if (!formData.address.trim()) newErrors.address = 'Address is required';
-    if (!formData.city.trim()) newErrors.city = 'City is required';
-    if (!formData.state.trim()) newErrors.state = 'State is required';
-    if (!formData.zipcode.trim()) newErrors.zipcode = 'ZipCode is required';
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-    return newErrors;
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      alert('Ownership transferred successfully!');
-      // Perform form submission logic here
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/transfer/initiate-transfer",
+        {
+          petId: ownershipDetails?.pets[0]?.petId,
+          currentOwnerEmail: ownershipDetails?.owner?.email,
+          newOwnerEmail: formData.email,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setTransfers((prev) => [
+        ...prev,
+        {
+          transferId: response.data.transferId,
+          petName: ownershipDetails?.pets[0]?.name,
+          status: "Pending approval from New Owner",
+        },
+      ]);
+      setOpenDialog(true); 
+    } catch (error) {
+      console.error("Failed to initiate ownership transfer:", error);
+      alert(error.response?.data?.message || "An error occurred.");
     }
   };
-
+  
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   return (
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h6">PetChain</Typography>
+          <Box>
+            <Button color="inherit" onClick={() => navigate("/pprofile")} sx={{ ml: 2 }}>
+              My Profile
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/insurance")} sx={{ ml: 2 }}>
+              Insurance
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/pet-health")} sx={{ ml: 2 }}>
+              Pet Health
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/ownership-transfer")} sx={{ ml: 2 }}>
+              Ownership Transfer
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                localStorage.removeItem("user");
+                navigate("/", { replace: true });
+              }}
+              sx={{ ml: 2 }}
+            >
+              Logout
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
 
-    <div
-      className="pet-profile-container"
-      style={{
-        backgroundColor: '#EFBA55',
-        backgroundSize: 'contain',
-        backgroundPosition: 'top center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '100vh',
-        padding: '20px',
-        fontFamily: 'Arial, sans-serif',
-      }}
-    >
-      <div
-        className="pet-profile-card"
-        style={{
-          backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '10px',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          maxWidth: '600px',
-          width: '100%',
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          flex: 1,
+          padding: 3,
         }}
       >
-        <Title
-          level={2}
-          className="pet-profile-title"
-          style={{
-            textAlign: 'left',
-            color: '#333',
-            fontFamily: 'cursive',
-            marginBottom: '20px',
-          }}
-        >
-          Ownership Transfer
-        </Title>
-
-        <h3 style={{
-          fontFamily: 'cursive',
-          marginTop: "25px",
-          marginBottom: "25px",
-          textDecoration: 'underline'
-        }}>
-          Pet Information
-        </h3>
-        <div className="pet-profile-row">
-          <Text
-            strong
-            style={{
-              fontSize: '16px',
-              fontWeight: 'bold',
-              fontFamily: 'cursive',
-            }}
-          >
-            Pet's Name:
-          </Text>
-          <Text style={{ fontSize: '16px', fontFamily: 'cursive' }}>
-            {petData.name}
-          </Text>
-        </div>
-        <div className="pet-profile-row">
-          <Text
-            strong
-            style={{
-              fontSize: '16px',
-              fontWeight: 'bold',
-              fontFamily: 'cursive',
-            }}
-          >
-            Gender:
-          </Text>
-          <Text style={{ fontSize: '16px', fontFamily: 'cursive' }}>
-            {petData.gender}
-          </Text>
-        </div>
-        <div className="pet-profile-row">
-          <Text
-            strong
-            style={{
-              fontSize: '16px',
-              fontWeight: 'bold',
-              fontFamily: 'cursive',
-            }}
-          >
-            Age:
-          </Text>
-          <Text style={{ fontSize: '16px', fontFamily: 'cursive' }}>
-            {petData.age} years
-          </Text>
-        </div>
-        <div className="pet-profile-row">
-          <Text
-            strong
-            style={{
-              fontSize: '16px',
-              fontWeight: 'bold',
-              fontFamily: 'cursive',
-            }}
-          >
-            Breed:
-          </Text>
-          <Text style={{ fontSize: '16px', fontFamily: 'cursive' }}>
-            {petData.breed}
-          </Text>
-        </div>
-
-        <h3 style={{
-          fontFamily: 'cursive',
-          marginTop: "25px",
-          marginBottom: "25px",
-          textDecoration: 'underline'
-        }}>
-          Current Owner Information
-        </h3>
-        <div className="pet-profile-row">
-          <Text
-            strong
-            style={{
-              fontSize: '16px',
-              fontWeight: 'bold',
-              fontFamily: 'cursive',
-            }}
-          >
-            Name:
-          </Text>
-          <Text style={{ fontSize: '16px', fontFamily: 'cursive' }}>
-            {petData.ownerName}
-          </Text>
-        </div>
-        <div className="pet-profile-row">
-          <Text
-            strong
-            style={{
-              fontSize: '16px',
-              fontWeight: 'bold',
-              fontFamily: 'cursive',
-            }}
-          >
-            Email:
-          </Text>
-          <Text style={{ fontSize: '16px', fontFamily: 'cursive' }}>
-            {petData.emailid}
-          </Text>
-        </div>
-        <div className="pet-profile-row">
-          <Text
-            strong
-            style={{
-              fontSize: '16px',
-              fontWeight: 'bold',
-              fontFamily: 'cursive',
-            }}
-          >
-            phoneNumber:
-          </Text>
-          <Text style={{ fontSize: '16px', fontFamily: 'cursive' }}>
-            {petData.phoneNumber}
-          </Text>
-        </div>
-        <div className="pet-profile-row">
-          <Text
-            strong
-            style={{
-              fontSize: '16px',
-              fontWeight: 'bold',
-              fontFamily: 'cursive',
-            }}
-          >
-            Address:
-          </Text>
-          <Text style={{ fontSize: '16px', fontFamily: 'cursive' }}>
-            {petData.owneraddress}
-          </Text>
-        </div>
-
-        <h3 style={{
-          fontFamily: 'cursive',
-          marginTop: "25px",
-          marginBottom: "25px",
-          textDecoration: 'underline'
-        }}>
-          New Owner's Information
-        </h3>
-
-        <form onSubmit={handleSubmit}>
-          {/* Name Field */}
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              htmlFor="name"
-              style={{ display: 'inline-block', width: "100px" }}
+        {loading ? (
+          <CircularProgress />
+        ) : error || !ownershipDetails || !ownershipDetails.pets || ownershipDetails.pets.length === 0 ? (
+          <Container maxWidth="sm" sx={{ textAlign: "center", mt: 4 }}>
+            <Typography variant="h5" gutterBottom>
+              No pets found for your account.
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Add your pet's details to start using this feature.
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{ mt: 2, bgcolor: "orange" }}
+              onClick={() => navigate("/pet-registration")}
             >
-              Name:
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter new owner's name"
-              style={{
-                padding: "8px",
-                fontSize: "14px",
-                width: "300px",
-              }}
-            />
-            {errors.name && <p style={{ color: 'red', fontSize: '12px' }}>{errors.name}</p>}
-          </div>
-
-          {/* Email Field */}
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              htmlFor="email"
-              style={{ display: 'inline-block', width: "100px" }}
-            >
-              Email:
-            </label>
-            <input
-              type="text"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter new owner's email"
-              style={{
-                padding: "8px",
-                fontSize: "14px",
-                width: "300px",
-              }}
-            />
-            {errors.email && <p style={{ color: 'red', fontSize: '12px' }}>{errors.email}</p>}
-          </div>
-
-          {/* ID Field */}
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              htmlFor="id"
-              style={{ display: 'inline-block', width: "100px" }}
-            >
-              ID:
-            </label>
-            <input
-              type="text"
-              id="id"
-              value={formData.id}
-              onChange={handleChange}
-              placeholder="Enter new owner's id"
-              style={{
-                padding: "8px",
-                fontSize: "14px",
-                width: "300px",
-              }}
-            />
-            {errors.id && <p style={{ color: 'red', fontSize: '12px' }}>{errors.id}</p>}
-          </div>
-
-          <div style={{ fontFamily: "Arial, sans-serif", maxWidth: "600px", margin: "20px auto" }}>
-            <h3 style={{ marginBottom: "15px" }}>Address:</h3>
-
-            {/* Street Address */}
-            <div >
-              <input
-                type="text"
-                value={formData.address}
-                onChange={handleChange}
-                style={{ width: "100%", padding: "10px", fontSize: "14px", border: "1px solid #ccc", borderRadius: "4px" }}
-              />
-              {errors.address && <p style={{ color: 'red', fontSize: '12px' }}>{errors.address}</p>}
-            </div>
-            <p style={{ marginBottom: "15px", fontSize: "14px" }}>Street Address</p>
-
-            {/* Street Address Line 2 */}
-            <div>
-              <input
-                type="text"
-                style={{ width: "100%", padding: "10px", fontSize: "14px", border: "1px solid #ccc", borderRadius: "4px" }}
-              />
-            </div>
-            <p style={{ marginBottom: "15px", fontSize: "14px" }}>Street Address Line 2</p>
-
-            { /* City and State/Province */}
-            <div style={{ display: "flex", gap: "15px" }}>
-              <input
-                type="text"
-                value={formData.city}
-                onChange={handleChange}
-                style={{ flex: 1, padding: "10px", fontSize: "14px", border: "1px solid #ccc", borderRadius: "4px" }}
-              />
-              {errors.city && <p style={{ color: 'red', fontSize: '12px' }}>{errors.city}</p>}
-              <input
-                type="text"
-                value={formData.state}
-                onChange={handleChange}
-                style={{ flex: 1, padding: "10px", fontSize: "14px", border: "1px solid #ccc", borderRadius: "4px" }}
-              />
-              {errors.state && <p style={{ color: 'red', fontSize: '12px' }}>{errors.state}</p>}
-            </div>
-            <div style={{ display: "flex", gap: "265px", marginBottom: "15px" }}>
-              <p style={{ marginBottom: "15px", fontSize: "14px" }}>City</p>
-              <p style={{ marginBottom: "15px", fontSize: "14px" }}>State/ Province</p>
-            </div>
-
-
-            {/* Postal / Zip Code */}
-            <div>
-              <input
-                type="text"
-                value={formData.zipcode}
-                onChange={handleChange}
-                style={{ width: "30%", padding: "10px", fontSize: "14px", border: "1px solid #ccc", borderRadius: "4px" }}
-              />
-              {errors.zipcode && <p style={{ color: 'red', fontSize: '12px' }}>{errors.zipcode}</p>}
-            </div>
-            <p style={{ marginBottom: "15px", fontSize: "14px" }}>Postal/ Zip Code</p>
-          </div>
-
-          {/* Phone Field */}
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              htmlFor="phone"
-              style={{ display: 'inline-block', width: "100px" }}
-            >
-              Phone:
-            </label>
-            <input
-              type="text"
-              id="phone"
-              onChange={handleChange}
-              placeholder="(000) 000-0000"
-              style={{
-                padding: "8px",
-                fontSize: "14px",
-                width: "300px",
-              }}
-            />
-            {errors.phone && <p style={{ color: 'red', fontSize: '12px' }}>{errors.phone}</p>}
-          </div>
-          <button
-            type="submit"
-            style={{
-              marginTop: "20px",
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: "10px 20px",
-              backgroundColor: "#007bff",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              fontSize: "16px",
-              cursor: "pointer"
+              Add Pet
+            </Button>
+          </Container>
+        ) : (
+          <Container
+            maxWidth="md"
+            sx={{
+              bgcolor: "white",
+              p: 4,
+              borderRadius: 2,
+              boxShadow: 3,
             }}
           >
-            Transfer
-          </button>
-        </form>
-      </div >
-    </div >
+            <Box sx={{ paddingLeft: 5, paddingRight: 5 }}>
+              <Typography variant="h4" align="center" gutterBottom>
+                Ownership Transfer
+              </Typography>
+
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
+                  padding: "0 0",
+                  borderBottom: "1px solid black",
+                  marginTop: 3,
+                }}
+              >
+                Pet Information
+              </Typography>
+              <Typography>
+                <strong>Pet's Name:</strong> {ownershipDetails.pets[0].name}
+              </Typography>
+              <Typography>
+                <strong>Pet ID:</strong> {ownershipDetails.pets[0].petId}
+              </Typography>
+              <Typography>
+                <strong>Gender:</strong> {ownershipDetails.pets[0].gender}
+              </Typography>
+              <Typography>
+                <strong>Age:</strong> {ownershipDetails.pets[0].age} years
+              </Typography>
+              <Typography>
+                <strong>Breed:</strong> {ownershipDetails.pets[0].breed}
+              </Typography>
+
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
+                  padding: "0 0",
+                  borderBottom: "1px solid black",
+                  marginTop: 3,
+                }}
+              >
+                Owner's Information
+              </Typography>
+              <Box>
+                <Typography>
+                  <strong>Owner's Name:</strong> {ownershipDetails.owner.owner_name}
+                </Typography>
+                <Typography>
+                  <strong>Email:</strong> {ownershipDetails.owner.email}
+                </Typography>
+              </Box>
+
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
+                  padding: "0 0",
+                  borderBottom: "1px solid black",
+                  marginTop: 3,
+                }}
+              >
+                New Owner's Information
+              </Typography>
+              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+                <Grid container spacing={2}>
+                  {[
+                    { name: "name", label: "Name" },
+                    { name: "email", label: "Email" },
+                    { name: "address", label: "Address" },
+                    { name: "zipcode", label: "Zip Code" },
+                  ].map((field, idx) => (
+                    <Grid item xs={12} sm={6} key={idx}>
+                      <TextField
+                        fullWidth
+                        name={field.name}
+                        label={field.label}
+                        value={formData[field.name]}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Grid>
+                  ))}
+                  <Grid item xs={12}>
+                    <Button type="submit" variant="contained" fullWidth sx={{ bgcolor: "orange" }}>
+                      Transfer Ownership
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
+                  padding: "0 0",
+                  borderBottom: "1px solid black",
+                  marginTop: 3,
+                }}
+              >
+                Transfers
+              </Typography>
+              {transfers.length > 0 ? (
+                <Box>
+                  {transfers.map((transfer, idx) => (
+                    <Box
+                      key={idx}
+                      sx={{
+                        border: "1px solid #ddd",
+                        borderRadius: "8px",
+                        p: 2,
+                        mb: 2,
+                      }}
+                    >
+                      <Typography>
+                        <strong>Transfer ID:</strong> {transfer._id}
+                      </Typography>
+                      <Typography>
+                        <strong>Pet Id:</strong> {transfer.petId}
+                      </Typography>
+                      <Typography>
+                        <strong>Status:</strong> {transfer.status || "Pending"}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              ) : (
+                <Typography>No transfer requests found.</Typography>
+              )}
+
+            </Box>
+          </Container>
+        )}
+
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <DialogTitle>Transfer Initiated</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              The ownership transfer request has been successfully initiated. An email has been sent to the new owner.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    </Box>
   );
 };
 

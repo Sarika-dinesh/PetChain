@@ -9,11 +9,12 @@ import PetProfile from './Components/PetProfile';
 import LoginRegister from './Components/LoginPage';
 import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
 //import LoginRegisterJsx from './Components/LoginPageCheck';
-import OwnershipTransfer from './Components/OwnershipTransfer';
+// import OwnershipTransfer from './Components/OwnershipTransfer';
 import InsuranceClaims from './Components/InsuranceClaims';
 import AddInsurancePage from './Components/AddInsurance';
 import AddInsuranceClaim from './Components/AddInsurancePage';
-import Owner from './Components/OwnershipTrans';
+import OwnershipTransfer from './Components/OwnershipTransfer';
+import ApproveTransfer from "./Components/ApproveTransfer";
 import Profile from './Components/profilepet';
 import MainPage from './Components/Profile';
 import Health from './Components/Health';
@@ -52,12 +53,12 @@ function App() {
         <Route path = "/services" element={<Services />}  />
         <Route path="/pet-registration" element={<RegisterPet />} />
         <Route element={<RequireAuth />}>
-        <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
           <Route path="/claim-insurance" element={<InsuranceClaims />} />
         <Route path="/pet-health" element={<Health />} />
         <Route path="/add-insurance" element={<AddInsurancePage />} />
         <Route path="/insurance" element={<AddInsuranceClaim />} />
-        <Route path="/owner-transfer" element={<Owner />} />
+        <Route path="/ownership-transfer" element={<OwnershipTransfer />} />
+        <Route path="/approve-transfer" element={<ApproveTransfer />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/pprofile" element={<MainPage />} />
         <Route path="/vet-profile" element={<VetProfile />} />

@@ -30,7 +30,7 @@ if (!user || !user.username) {
           <Box>
             <Button
               color="inherit"
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/pprofile")}
               sx={{ ml: 2 }}
             >
               My Profile
@@ -51,7 +51,7 @@ if (!user || !user.username) {
             </Button>
             <Button
               color="inherit"
-              onClick={() => navigate("/owner-transfer")}
+              onClick={() => navigate("/ownership-transfer")}
               sx={{ ml: 2 }}
             >
               Ownership Transfer

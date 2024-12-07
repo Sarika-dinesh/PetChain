@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 function LoginPage() {
   const navigate = useNavigate();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(""); // Track selected role
+  const [selectedRole, setSelectedRole] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",

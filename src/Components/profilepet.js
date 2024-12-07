@@ -154,7 +154,7 @@ const PetProfile = () => {
             <Button color="inherit" onClick={() => navigate('/pet-health')} sx={{ mx: 1 }}>
               Pet Health
             </Button>
-            <Button color="inherit" onClick={() => navigate('/owner-transfer')} sx={{ mx: 1 }}>
+            <Button color="inherit" onClick={() => navigate('/ownership-transfer')} sx={{ mx: 1 }}>
               Ownership Transfer
             </Button>
           </Box>
