@@ -8,7 +8,7 @@ const PetProfile = () => {
   const navigate = useNavigate();
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const [displayText, setDisplayText] = useState(""); // State for display text
-  const [additionalInfo, setAdditionalInfo] = useState(""); // State for additional info
+  const [additional_info, setAdditionalInfo] = useState(""); // State for additional info
   const [is_lost, setIsLost] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false); // New state to handle submission
 
@@ -19,7 +19,6 @@ const PetProfile = () => {
     breed: "",
     age: "",
     color: "",
-    additionalInfo: "",
     picture: "",
   });
 
@@ -58,7 +57,6 @@ const PetProfile = () => {
             age: pet.age,
             color: pet.color,
             gender: pet.gender,
-            additionalInfo: pet.additionalInfo,
             picture: pet.picture,
           });
           setIsLost(pet.is_lost || false);
@@ -74,14 +72,18 @@ const PetProfile = () => {
   const handleStatusChange = async (lostStatus, additionalInfo) => {
     try {
       const petId = petData.ID;
-  
+
       const response = await axios.post(`http://localhost:3000/api/pets/status/${petId}`, {
         is_lost: lostStatus,
-        additionalInfo,
+        additional_info: additionalInfo,
       });
-  
+
+
       if (response.status === 200) {
+        console.log(is_lost);
+        console.log(additional_info);
         setIsLost(lostStatus);
+        setAdditionalInfo(additional_info);
         setDisplayText(
           lostStatus
             ? "Your pet has been marked as lost."
@@ -97,18 +99,18 @@ const PetProfile = () => {
       setDisplayText("An error occurred while updating the pet's status. Please try again.");
     }
   };
-  
+
   const handleLost = () => {
     setShowAdditionalInfo(true); // Show additional info input when marking as lost
     setDisplayText(""); // Clear any previous messages
   };
 
   const handleSubmit = async () => {
-    if (additionalInfo.trim() === "") {
-      setDisplayText("Please provide additional information before submitting.");
+    if (additional_info.trim() === "") {
+      setDisplayText("Please provide additional information before submitting");
       return;
     }
-    await handleStatusChange(true, additionalInfo); // Call with lost status and additional info
+    await handleStatusChange(true, additional_info); // Call with lost status and additional info
   };
 
   const handleFound = async () => {
@@ -124,7 +126,7 @@ const PetProfile = () => {
       setDisplayText("An error occurred while updating the pet's status. Please try again.");
     }
   };
-  
+
 
   return (
     <Box
@@ -318,7 +320,7 @@ const PetProfile = () => {
               label="Additional Information"
               multiline
               rows={4}
-              value={additionalInfo}
+              value={additional_info}
               onChange={(e) => setAdditionalInfo(e.target.value)} // Controlled input
               variant="outlined"
               margin="normal"
@@ -338,6 +340,12 @@ const PetProfile = () => {
               Submit
             </Button>
           </Box>
+        )}
+
+        {displayText && (
+          <Typography variant="h6" color="error" sx={{ mt: 2 }}>
+            {displayText}
+          </Typography>
         )}
 
         {isSubmitted && (
