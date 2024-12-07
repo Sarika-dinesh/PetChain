@@ -13,7 +13,7 @@ import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
 import InsuranceClaims from './Components/InsuranceClaims';
 import AddInsurancePage from './Components/AddInsurance';
 import AddInsuranceClaim from './Components/AddInsurancePage';
-import OwnershipTransfer from './Components/OwnershipTrans';
+import OwnershipTransfer from './Components/OwnershipTransfer';
 import Profile from './Components/profilepet';
 import MainPage from './Components/Profile';
 import Health from './Components/Health';
