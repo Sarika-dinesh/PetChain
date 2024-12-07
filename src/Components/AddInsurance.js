@@ -49,10 +49,28 @@ const AddInsurancePage = () => {
     fetchData();
   }, []);
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Handle validityPeriod nested fields
+    if (name === "startDate" || name === "endDate") {
+      setFormData({
+        ...formData,
+        validityPeriod: {
+          ...formData.validityPeriod,
+          [name]: value,
+        },
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
+
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -67,10 +85,15 @@ const AddInsurancePage = () => {
 
     // Prepare data for the API
     const payload = {
-      providename: formData.provideName,
-      policynumber: formData.policyNumber,
-      coverageamount: formData.coverageAmount,
-      validityperiod: formData.validityPeriod,
+      ID: petData.ID,
+      ownderID: ownerData.ID,
+      provideName: formData.provideName,
+      policyNumber: formData.policyNumber,
+      coverageAmount: formData.coverageAmount,
+      validityPeriod: {
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+      },
     };
 
     try {
@@ -78,8 +101,8 @@ const AddInsurancePage = () => {
       console.log("POST request sent");
       const response = await axios.post("http://localhost:3000/api/insurance/claim/add", payload);
 
+      console.log("Verifying data");
       console.log(response.data);
-      //console.log(response.data);
 
       // Save insurance information in localStorage
       console.log("removed response ok")
@@ -226,7 +249,8 @@ const AddInsurancePage = () => {
                       name="startDate"
                       label="Start Date"
                       type="date"
-                      value={formData.startDate}
+                      value={formData.validityPeriod.startDate || ""}
+                      onChange={handleChange}
                       InputLabelProps={{
                         shrink: true,
                         sx: {
@@ -241,7 +265,8 @@ const AddInsurancePage = () => {
                       name="endDate"
                       label="End Date"
                       type="date"
-                      value={formData.endDate}
+                      value={formData.validityPeriod.endDate || ""}
+                      onChange={handleChange}
                       InputLabelProps={{
                         shrink: true,
                         sx: {

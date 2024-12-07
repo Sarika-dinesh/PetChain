@@ -107,7 +107,7 @@ const PetProfile = () => {
 
   const handleSubmit = async () => {
     if (additional_info.trim() === "") {
-      setDisplayText("Please provide additional information before submitting");
+      setDisplayText("Please provide some additional information before submitting");
       return;
     }
     await handleStatusChange(true, additional_info); // Call with lost status and additional info
@@ -342,7 +342,7 @@ const PetProfile = () => {
           </Box>
         )}
 
-        {displayText && (
+        {!isSubmitted && displayText && (
           <Typography variant="h6" color="error" sx={{ mt: 2 }}>
             {displayText}
           </Typography>
