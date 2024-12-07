@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Button, Container, TextField, Typography, Box, Grid } from "@mui/material";
+import { AppBar, Toolbar, Button, Container, TextField, Typography, Box, Input, Grid, FormControl, FormLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios for API calls
 
+
 const RegisterPet = () => {
   const navigate = useNavigate();
+  const [filePreview, setFilePreview] = useState(null);
 
   const [formData, setFormData] = useState({
     petName: "",
@@ -12,13 +14,27 @@ const RegisterPet = () => {
     age: "",
     gender: "",
     color: "",
+    picture: "",
   });
 
   // const petData = {
   //   ownerName: "user3",
   //   ownerID: "OWNER_1732924652972",
   // };
-  
+
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, file });
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFilePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log(user);
@@ -65,6 +81,7 @@ const RegisterPet = () => {
       age: formData.age,
       gender: formData.gender,
       color: formData.color,
+      picture: formData.picture,
     };
 
     try {
@@ -74,11 +91,17 @@ const RegisterPet = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token for authentication
         },
-        
+
       });
 
       console.log(response.data);
+      console.log(response.data.pet);
+
+      // Save pet information in localStorage
+      console.log("removed response ok")
       localStorage.setItem("pet", JSON.stringify(response.data.pet));
+      const petData = JSON.parse(localStorage.getItem("pet"))
+      console.log(petData)
       alert("New Pet Added Successfully!");
       navigate("/pprofile"); // Redirect to profile page
     } catch (error) {
@@ -175,12 +198,44 @@ const RegisterPet = () => {
                   />
                 </Grid>
               ))}
+
+              <FormControl fullWidth>
+                <FormLabel
+                  sx={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontWeight: "bold",
+                    marginLeft: "20px",
+                    marginTop: "15px"
+                  }}
+                >
+                  Upload Pet Photo
+                </FormLabel>
+                <Input
+                  fullWidth
+                  name="file"
+                  type="file"
+                  onChange={handleFileChange}
+                  inputProps={{ accept: "image/*,application/pdf" }}
+                  required
+                  sx={{
+                    display: "flex",
+                    height: "70%",
+                    marginTop: "15px",
+                    marginLeft: "20px",
+                    marginBottom: "20px"
+                  }}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+
             </Grid>
 
             <Grid container spacing={2}>
               {[
                 { name: "ownerName", label: "Owner's Name", value: petData.ownerName },
-                { name: "ownerID", label: "", value: petData.customID },
+                { name: "ownerID", label: "Owner's ID", value: petData.customID },
               ].map((field, idx) => (
                 <Grid item xs={12} sm={6} key={idx}>
                   <TextField

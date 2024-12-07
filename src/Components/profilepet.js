@@ -1,35 +1,132 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import { AppBar, Box, Button, Container, Grid, TextField, Typography, Toolbar, Fab } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
+import axios from 'axios';
 
 const PetProfile = () => {
   const navigate = useNavigate();
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+  const [displayText, setDisplayText] = useState(""); // State for display text
+  const [additional_info, setAdditionalInfo] = useState(""); // State for additional info
+  const [is_lost, setIsLost] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false); // New state to handle submission
 
-  // Example pet profile data
-  const petData = {
-    name: 'Coco',
-    ID: '123',
-    gender: 'Female',
-    ownerName: 'Sakshi Singh',
-    ownerID: '456',
-    age: 2,
-    breed: 'Cocker Spaniel',
-    color: 'Golden',
-    additionalInfo: 'Loves playing fetch and enjoys long walks in the park.',
-    picture: '/images/istockphoto-1164917271-1024x1024.jpg', // Correct path
+  const [petData, setPetData] = useState({
+    petName: "",
+    ID: "",
+    gender: "",
+    breed: "",
+    age: "",
+    color: "",
+    picture: "",
+  });
+
+  const [ownerData, setOwnerData] = useState({
+    ownerName: "",
+    ownerID: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const storedPet = localStorage.getItem("pet");
+      let pet = null;
+      if (storedPet) {
+        try {
+          pet = JSON.parse(storedPet);
+        } catch (error) {
+          localStorage.removeItem("pet");
+          console.error("Error parsing pet data from localStorage:", error);
+        }
+      }
+
+      try {
+        if (user) {
+          setOwnerData({
+            ownerName: user.name,
+            ownerID: user.id,
+          });
+        }
+
+        if (pet) {
+          setPetData({
+            petName: pet.name,
+            ID: pet.petId,
+            breed: pet.breed,
+            age: pet.age,
+            color: pet.color,
+            gender: pet.gender,
+            picture: pet.picture,
+          });
+          setIsLost(pet.is_lost || false);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleStatusChange = async (lostStatus, additionalInfo) => {
+    try {
+      const petId = petData.ID;
+
+      const response = await axios.post(`http://localhost:3000/api/pets/status/${petId}`, {
+        is_lost: lostStatus,
+        additional_info: additionalInfo,
+      });
+
+
+      if (response.status === 200) {
+        console.log(is_lost);
+        console.log(additional_info);
+        setIsLost(lostStatus);
+        setAdditionalInfo(additional_info);
+        setDisplayText(
+          lostStatus
+            ? "Your pet has been marked as lost."
+            : "Your pet has been marked as found!"
+        );
+        setIsSubmitted(lostStatus); // Mark submission as successful only for lost
+        setShowAdditionalInfo(false); // Always hide additional info input after submission
+      } else {
+        throw new Error("Unexpected response from the server");
+      }
+    } catch (error) {
+      console.error("Error updating pet status:", error);
+      setDisplayText("An error occurred while updating the pet's status. Please try again.");
+    }
   };
 
   const handleLost = () => {
-    setShowAdditionalInfo(true);
-    console.log('Pet marked as LOST');
+    setShowAdditionalInfo(true); // Show additional info input when marking as lost
+    setDisplayText(""); // Clear any previous messages
   };
 
-  const handleFound = () => {
-    setShowAdditionalInfo(false);
-    console.log('Pet marked as FOUND');
+  const handleSubmit = async () => {
+    if (additional_info.trim() === "") {
+      setDisplayText("Please provide some additional information before submitting");
+      return;
+    }
+    await handleStatusChange(true, additional_info); // Call with lost status and additional info
   };
+
+  const handleFound = async () => {
+    try {
+      await handleStatusChange(false, ""); // Call with found status and no additional info
+      setIsLost(false); // Reset the lost state
+      setShowAdditionalInfo(false); // Hide additional info input
+      setAdditionalInfo(""); // Clear additional info input
+      setDisplayText(""); // Clear any display message
+      navigate("/profile"); // Redirect to profile after marking as found
+    } catch (error) {
+      console.error("Error marking as found:", error);
+      setDisplayText("An error occurred while updating the pet's status. Please try again.");
+    }
+  };
+
 
   return (
     <Box
@@ -40,7 +137,6 @@ const PetProfile = () => {
         backgroundPosition: 'top center',
         backgroundRepeat: 'no-repeat',
         minHeight: '100vh',
-        /*padding: '20px',*/
         fontFamily: 'Arial, sans-serif',
       }}
     >
@@ -68,7 +164,7 @@ const PetProfile = () => {
       {/* Greeting Section */}
       <Box sx={{ textAlign: 'center', mt: 4 }}>
         <Typography variant="h5">
-          Hi Sakshi, welcome to PetChain! <br />
+          Hi {ownerData.ownerName}, welcome to PetChain! <br />
           Thank you for choosing us.
         </Typography>
       </Box>
@@ -104,7 +200,7 @@ const PetProfile = () => {
             <TextField
               fullWidth
               label="Pet's Name"
-              value={petData.name}
+              value={petData.petName}
               variant="outlined"
               margin="normal"
               InputProps={{
@@ -167,7 +263,7 @@ const PetProfile = () => {
             <TextField
               fullWidth
               label="Owner's Name"
-              value={petData.ownerName}
+              value={ownerData.ownerName}
               variant="outlined"
               margin="normal"
               InputProps={{
@@ -177,7 +273,7 @@ const PetProfile = () => {
             <TextField
               fullWidth
               label="Owner ID"
-              value={petData.ownerID}
+              value={ownerData.ownerID}
               variant="outlined"
               margin="normal"
               InputProps={{
@@ -186,6 +282,7 @@ const PetProfile = () => {
             />
           </Grid>
         </Grid>
+
         <Box sx={{ mt: 4 }}>
           <Button
             variant="contained"
@@ -215,14 +312,16 @@ const PetProfile = () => {
             Mark as FOUND
           </Button>
         </Box>
-        {showAdditionalInfo && (
+
+        {showAdditionalInfo && !isSubmitted && (
           <Box sx={{ mt: 3 }}>
             <TextField
               fullWidth
               label="Additional Information"
               multiline
               rows={4}
-              defaultValue={petData.additionalInfo}
+              value={additional_info}
+              onChange={(e) => setAdditionalInfo(e.target.value)} // Controlled input
               variant="outlined"
               margin="normal"
             />
@@ -236,22 +335,33 @@ const PetProfile = () => {
                 },
                 mt: 2,
               }}
+              onClick={handleSubmit}
             >
               Submit
             </Button>
           </Box>
         )}
+
+        {!isSubmitted && displayText && (
+          <Typography variant="h6" color="error" sx={{ mt: 2 }}>
+            {displayText}
+          </Typography>
+        )}
+
+        {isSubmitted && (
+          <Typography variant="h6" align="center" sx={{ mt: 3, color: 'red' }}>
+            Your pet has been marked as lost.
+          </Typography>
+        )}
+
       </Container>
 
       {/* Floating Button to Add a Pet */}
       <Fab
         color="primary"
-        sx={{
-          position: 'fixed',
-          bottom: 16,
-          right: 16,
-        }}
-        onClick={() => navigate('/add-pet')}
+        aria-label="add"
+        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        onClick={() => navigate('/pet-registration')}
       >
         <AddIcon />
       </Fab>

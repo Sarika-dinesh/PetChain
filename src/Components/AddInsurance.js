@@ -1,26 +1,121 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Button, Container, TextField, Typography, Box, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Import axios for API calls
 
 const AddInsurancePage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    ownerName: "",
-    petName: "",
-    insurancePolicy: "",
-    coverageDetails: "",
+    providerName: "",
+    policyNumber: "",
+    coverageAmount: "",
+    validityPeriod: {
+      startDate: "",
+      endDate: "",
+    },
   });
+
+  const [petData, setPetData] = useState({
+    ID: ""
+  });
+
+  const [ownerData, setOwnerData] = useState({
+    ownerID: ""
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const pet = JSON.parse(localStorage.getItem("pet"));
+
+      try {
+        if (user) {
+          setOwnerData({
+            ownerID: user.id,
+          });
+        }
+
+        if (pet) {
+          setPetData({
+            ID: pet.petId,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Handle validityPeriod nested fields
+    if (name === "startDate" || name === "endDate") {
+      setFormData({
+        ...formData,
+        validityPeriod: {
+          ...formData.validityPeriod,
+          [name]: value,
+        },
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e) => {
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log(formData);
+  //   alert("Insurance Added!");
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert("Insurance Added!");
+
+    console.log("Add Insurance");
+
+    // Prepare data for the API
+    const payload = {
+      ID: petData.ID,
+      ownderID: ownerData.ID,
+      provideName: formData.provideName,
+      policyNumber: formData.policyNumber,
+      coverageAmount: formData.coverageAmount,
+      validityPeriod: {
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+      },
+    };
+
+    try {
+      // Send POST request to the backend API
+      console.log("POST request sent");
+      const response = await axios.post("http://localhost:3000/api/insurance/claim/add", payload);
+
+      console.log("Verifying data");
+      console.log(response.data);
+
+      // Save insurance information in localStorage
+      console.log("removed response ok")
+      localStorage.setItem("insurance", JSON.stringify(response.data));
+      const insuranceData = JSON.parse(localStorage.getItem("insurance"))
+      console.log(insuranceData)
+
+      alert("Pet Insurance Policy Added Successfully!");
+      navigate("/insurance"); // Redirect to profile page
+    } catch (error) {
+      console.error("Error adding insurance policy:", error);
+      alert(error.response?.data?.message || "Failed to add pet's insurace policy.");
+    }
   };
 
   return (
@@ -105,9 +200,9 @@ const AddInsurancePage = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  name="ownerName"
-                  label="Owner's Name"
-                  value={formData.ownerName}
+                  name="petId"
+                  label="Pet's ID"
+                  value={petData.ID}
                   onChange={handleChange}
                   required
                 />
@@ -115,9 +210,9 @@ const AddInsurancePage = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  name="petName"
-                  label="Pet's Name"
-                  value={formData.petName}
+                  name="ownerId"
+                  label="Owner's ID"
+                  value={ownerData.ownerID}
                   onChange={handleChange}
                   required
                 />
@@ -125,9 +220,9 @@ const AddInsurancePage = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  name="insurancePolicy"
-                  label="Insurance Policy Number"
-                  value={formData.insurancePolicy}
+                  name="providerName"
+                  label="Insurance Provider Name"
+                  value={formData.providerName}
                   onChange={handleChange}
                   required
                 />
@@ -135,15 +230,63 @@ const AddInsurancePage = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  name="coverageDetails"
-                  label="Coverage Details"
+                  name="policyNumber"
+                  label="Policy Number"
                   multiline
-                  rows={4}
-                  value={formData.coverageDetails}
+                  value={formData.policyNumber}
                   onChange={handleChange}
                   required
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  name="coverageAmount"
+                  label="Coverage Amount"
+                  value={formData.coverageAmount}
+                  onChange={handleChange}
+                  required
+                />
+              </Grid>
+              <Typography variant="p" gutterBottom style={{ padding: "70px 0px 50px 50px" }}>
+                Validity Period:
+              </Typography>
+              <Box component="form" sx={{ mt: 2 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      name="startDate"
+                      label="Start Date"
+                      type="date"
+                      value={formData.validityPeriod.startDate || ""}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true,
+                        sx: {
+                          paddingTop: "8px",
+                        },
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      name="endDate"
+                      label="End Date"
+                      type="date"
+                      value={formData.validityPeriod.endDate || ""}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true,
+                        sx: {
+                          paddingTop: "8px",
+                        },
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
               <Grid item xs={12}>
                 <Button
                   type="submit"

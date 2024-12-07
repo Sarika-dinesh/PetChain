@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TextField,
   Button,
@@ -20,10 +20,53 @@ const InsuranceClaimPage = () => {
     documents: null,
   });
 
-  const petData = {
-    petName: "Coco",
-    ownerName: "Sakshi Singh",
-  }
+  // const petData = {
+  //   petName: "Coco",
+  //   ownerName: "Sakshi Singh",
+  // }
+
+  const [petData, setPetData] = useState({
+    petID: "",
+   });
+ 
+   const [ownerData, setOwnerData] = useState({
+     ownerID: "",
+   });
+
+   const [insuranceData, setInsuranceData] = useState({
+    policyNumber: "",
+   });
+ 
+   useEffect(() => {
+     const fetchData = async () => {
+       const user = JSON.parse(localStorage.getItem("user"));
+       const storedPet = JSON.parse(localStorage.getItem("pet")); 
+       const polNumber = JSON.parse(localStorage.getItem("insurance"));
+       try {
+         if (user) {
+           setOwnerData({
+             ownerID: user.id,
+           });
+         }
+ 
+         if (storedPet) {
+           setPetData({
+             petID: storedPet.petId,
+           });
+         }
+
+         if(polNumber){
+          setInsuranceData({
+            policyNumber: polNumber.policynumber,  // To be modified based on AddInsurance.js
+          });
+         }
+       } catch (error) {
+         console.error("Error fetching data:", error);
+       }
+     };
+ 
+     fetchData();
+   }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -113,7 +156,7 @@ const InsuranceClaimPage = () => {
             <TextField
               fullWidth
               label="Owner's Name"
-              value={petData.ownerName}
+              value={ownerData.ownerID}
               variant="outlined"
               margin="normal"
               InputProps={{
@@ -125,7 +168,7 @@ const InsuranceClaimPage = () => {
             <TextField
               fullWidth
               label="Pet's Name"
-              value={petData.petName}
+              value={petData.petID}
               variant="outlined"
               margin="normal"
               InputProps={{

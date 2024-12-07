@@ -18,6 +18,12 @@ function LoginPage() {
     additionalInfo: "",
   });
 
+  // useEffect(() => {
+  //   const storedUser = JSON.parse(localStorage.getItem("user"));
+  //   if (storedUser) {
+  //     navigate("/pprofile", { state: { username: storedUser.name } });
+  //   }
+  // }, [navigate]);
 
   const handleSignUpClick = () => {
     setFormData({
