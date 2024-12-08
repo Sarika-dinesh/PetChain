@@ -12,7 +12,9 @@
   .vet-profile-section-text-container {
     text-align: center;
     max-width: 600px;
-    margin: auto;
+    margin: 10rem;
+    margin-top: 0rem;
+    position: fixed; 
   }
   
   /* Greeting Message */
@@ -44,6 +46,15 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+  }
+
+  .corner-image {
+    position: fixed; /* Keeps the image fixed in the viewport */
+    bottom: 20px; /* Adjust for vertical positioning */
+    left: 20px; /* Adjust for horizontal positioning */
+    width: 400px; /* Set the size of the image */
+    height: auto; /* Maintain aspect ratio */
+    /* z-index: 1000; Ensures it stays above other elements */
   }
   
   /* Primary Button Styling */

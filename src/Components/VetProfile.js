@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Button, Box, Typography, TextField } from "@mui/materi
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios'; // Assuming you're using axios for API calls
 import './vet-profile.css'; // CSS file for styling the Vet Profile
+import CornerImage from "../Assets/Vet-corner.png"; 
 
 const VetProfile = () => {
   const navigate = useNavigate();
@@ -10,8 +11,7 @@ const VetProfile = () => {
 
   // Retrieve vet information from state or localStorage
   const user = location.state?.username || JSON.parse(localStorage.getItem("user") || "{}");
-  
-  const [pets, setPets] = useState([]);
+  console.log(user);
   //const [searchQuery, setSearchQuery] = useState("");
 
 
@@ -31,54 +31,82 @@ const VetProfile = () => {
   // }, [user]);
 
   // Early return if no user is found
-  if (!user || !user.username) {
-    navigate("/", { replace: true });
-    //return null;
-  }
+  // if (!user || !user.username) {
+  //   navigate("/", { replace: true });
+  //   //return null;
+  // }
 
-  const [searchQuery, setSearchQuery] = useState("12345");
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState(null); // State to store API response
   const [error, setError] = useState(null); // State to store error messages
 
+  // const handleSearch = async () => {
+  //   if (!searchQuery.trim()) {
+  //     setError("Please enter a valid Pet ID");
+  //     return;
+  //   }
+  //   console.log("handleSearch")
+  //   setError(null); // Clear any existing errors
+  //   try {
+  //     const response = await fetch(`http://localhost:3000/api/pet-health/${searchQuery}`, {
+  //       method: "GET",
+  //     });
+  //     console.log(response)
+  //     if (!response.ok) {
+  //       throw new Error(`Error: ${response.status} - ${response.statusText}`);
+  //     }
+  //     console.log("response is ok! now data")
+  //     const data = await response.json(); 
+  //     console.log(data)
+  //     //okay
+  //     setSearchResult(data); // Update the search result
+  //     console.log(searchResult)
+  //     console.log("Searched result")
+  //   } catch (err) {
+  //     setError(err.message);
+  //     setSearchResult(null); // Clear any previous results
+  //   }
+
+  // };
+  //   // Logging searchResult when it changes
+  //   useEffect(() => {
+  //     if (searchResult) {
+  //       console.log("Updated searchResult:", searchResult);
+  //     }
+  //   }, [searchResult]);
+  
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       setError("Please enter a valid Pet ID");
       return;
     }
-    console.log("handleSearch")
     setError(null); // Clear any existing errors
     try {
       const response = await fetch(`http://localhost:3000/api/pet-health/${searchQuery}`, {
         method: "GET",
       });
-      console.log(response)
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
-      console.log("response is ok! now data")
-      const data = await response.json(); 
-      console.log(data)
-      //okay
+      const data = await response.json();
       setSearchResult(data); // Update the search result
-      console.log(searchResult)
-      console.log("Searched result")
     } catch (err) {
       setError(err.message);
       setSearchResult(null); // Clear any previous results
     }
-
   };
-    // Logging searchResult when it changes
-    useEffect(() => {
-      if (searchResult) {
-        console.log("Updated searchResult:", searchResult);
-      }
-    }, [searchResult]);
   
-    
+  // Logging searchResult when it changes
+  useEffect(() => {
+    if (searchResult) {
+      console.log("Updated searchResult:", searchResult);
+    }
+  }, [searchResult]);
+  
   return (
     <div>
       {/* Header */}
+      <img src={CornerImage} alt="Corner Decoration" className="corner-image" />
       <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">PetChain - Vet Portal</Typography>
@@ -90,20 +118,20 @@ const VetProfile = () => {
             >
               My Profile
             </Button>
-            <Button
+            {/* <Button
               color="inherit"
               onClick={() => navigate("/vet-pet-health")}
               sx={{ ml: 2 }}
             >
               Pet Health
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
               color="inherit"
               onClick={() => navigate("/vet-insights")}
               sx={{ ml: 2 }}
             >
               Insights
-            </Button>
+            </Button> */}
             <Button
               color="inherit"
               onClick={() => {
@@ -122,12 +150,13 @@ const VetProfile = () => {
       <div className="vet-profile-section-container">
         <div className="vet-profile-section-text-container">
           <Typography variant="h5" className="greeting-message">
-            Hi {user.username}, welcome to your PetChain Dashboard!
+            
           </Typography>
 
-          <h1 className="vet-profile-primary-heading">Manage Your Veterinary Services</h1>
+          <h1 className="vet-profile-primary-heading">Effortlessly manage veterinary services with ease.</h1>
           <p className="vet-primary-text">
-            Access pet health records, provide care recommendations, and explore insights for better pet healthcare.
+          Review detailed pet health records, track vaccination schedules, and provide informed care recommendations to ensure the well-being of your patients.
+ 
           </p>
 
           {/* Search Bar */}
@@ -144,41 +173,77 @@ const VetProfile = () => {
           variant="contained"
           color="primary"
           onClick={handleSearch}
-          sx={{ maxWidth: "300px", marginLeft: "10px" }}
+          sx={{
+            maxWidth: "300px",
+            marginLeft: "10px",
+            backgroundColor: "orange",
+            color: "white",
+            '&:hover': {
+              backgroundColor: "darkorange",
+            },
+          }}
         >
           Search
         </Button>
+        <Button
+    variant="contained"
+    color="secondary"
+    onClick={() => {
+      setSearchQuery(""); // Clear the input field
+      setSearchResult(null); // Clear the search results
+      setError(null); // Clear any error messages
+    }}
+    sx={{
+      maxWidth: "300px",
+      marginLeft: "10px",
+      backgroundColor: "orange",
+      color: "white",
+      '&:hover': {
+        backgroundColor: "darkorange",
+      },
+    }}
+  >
+    Reset
+  </Button>
           </div>
 
           {/* Display Search Results */}
-          {searchResult && (
-        <Box sx={{ marginTop: "20px", textAlign: "left", width: "100%", maxWidth: "600px" }}>
-          <Typography variant="h6">Pet Details</Typography>
-          <Box sx={{ backgroundColor: "#f5f5f5", padding: "20px", borderRadius: "5px" }}>
-            <Typography><strong>Name:</strong> {searchResult.name}</Typography>
-            <Typography><strong>Pet ID:</strong> {searchResult.petId}</Typography>
-            {/* <Typography><strong>Vet ID:</strong> {searchResult.vetId}</Typography> */}
-            <Typography><strong>Vaccination Date:</strong> {new Date(searchResult.vaccinationDate).toLocaleDateString()}</Typography>
-            <Typography><strong>Vaccine Type:</strong> {searchResult.vaccineType}</Typography>
-            <Typography><strong>Next Due Date:</strong> {new Date(searchResult.nextDueDate).toLocaleDateString()}</Typography>
-            <Typography><strong>Allergies:</strong> {searchResult.allergies.join(", ")}</Typography>
-            <Typography><strong>Past Treatments:</strong> {searchResult.pastTreatments.join(", ")}</Typography>
-            <Typography><strong>Minor Illness Records:</strong> {searchResult.minorIllnessRecords.join(", ")}</Typography>
-            <Typography><strong>File:</strong> <a href={searchResult.file} target="_blank" rel="noopener noreferrer">{searchResult.file}</a></Typography>
+          {searchResult ? (
+      <Box     sx={{
+        marginTop: "20px",
+        textAlign: "left",
+        width: "100%",
+        maxWidth: "600px",
+        maxHeight: "400px", // Limit the height of the scrollable area
+        overflowY: "auto", // Enable vertical scrolling
+        backgroundColor: "#f5f5f5", // Optional styling for better visuals
+        padding: "20px",
+        borderRadius: "5px",
+      }}>
+        <Typography variant="h6">Pet Details</Typography>
+        <Box sx={{ backgroundColor: "#f5f5f5", padding: "20px", borderRadius: "5px" }}>
+          <Typography><strong>Name:</strong> {searchResult.name}</Typography>
+          <Typography><strong>Pet ID:</strong> {searchResult.petId}</Typography>
+          <Typography><strong>Allergies:</strong> {searchResult.allergies.join(", ")}</Typography>
+          <Typography><strong>Past Treatments:</strong> {searchResult.pastTreatments.join(", ")}</Typography>
+          <Typography><strong>Minor Illness Records:</strong> {searchResult.minorIllnessRecords.join(", ")}</Typography>
+          <Typography><strong>File:</strong> <a href={searchResult.file} target="_blank" rel="noopener noreferrer">{searchResult.file}</a></Typography>
 
-            {/* Vaccination Records */}
-            <Typography variant="h6" sx={{ marginTop: "20px" }}>Vaccination Records</Typography>
-            {searchResult.vaccinationRecords.map((record, index) => (
-              <Box key={record._id} sx={{ padding: "10px", margin: "10px 0", backgroundColor: "#ffffff", border: "1px solid #ddd", borderRadius: "5px" }}>
-                <Typography><strong>Record {index + 1}:</strong></Typography>
-                <Typography><strong>Vaccination Date:</strong> {new Date(record.vaccinationDate).toLocaleDateString()}</Typography>
-                <Typography><strong>Vaccine Type:</strong> {record.vaccineType}</Typography>
-                <Typography><strong>Next Due Date:</strong> {new Date(record.nextDueDate).toLocaleDateString()}</Typography>
-              </Box>
-            ))}
-          </Box>
+          {/* Vaccination Records */}
+          <Typography variant="h6" sx={{ marginTop: "20px" }}>Vaccination Records</Typography>
+          {searchResult.vaccinationRecords.map((record, index) => (
+            <Box key={record._id} sx={{ padding: "10px", margin: "10px 0", backgroundColor: "#ffffff", border: "1px solid #ddd", borderRadius: "5px" }}>
+              <Typography><strong>Record {index + 1}:</strong></Typography>
+              <Typography><strong>Vaccination Date:</strong> {new Date(record.vaccinationDate).toLocaleDateString()}</Typography>
+              <Typography><strong>Vaccine Type:</strong> {record.vaccineType}</Typography>
+              <Typography><strong>Next Due Date:</strong> {new Date(record.nextDueDate).toLocaleDateString()}</Typography>
+            </Box>
+          ))}
         </Box>
-      )}
+      </Box>
+    ) : (
+      error && <Typography color="error">{error}</Typography>
+    )}
         </div>
       </div>
     </div>
