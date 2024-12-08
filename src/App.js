@@ -5,7 +5,7 @@ import About from './Components/About';
 // import Footer from './Components/Footer';
 import Contact from './Components/Contact';
 import Services from './Components/Services';
-import PetProfile from './Components/PetProfile';
+
 import LoginRegister from './Components/LoginPage';
 import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
 //import LoginRegisterJsx from './Components/LoginPageCheck';
@@ -44,7 +44,6 @@ function App() {
           />
 
           {/* Separate pages */}
-          <Route path="/pet-profile" element={<PetProfile />} />
           <Route path="/search-profile" element={<SearchPetProfileDisplay />} />
           <Route path="/login" element={<LoginRegister />}/>
         <Route path="/home" element={<Home />} />
