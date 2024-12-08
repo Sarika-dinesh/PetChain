@@ -35,57 +35,56 @@ const OwnershipTransfer = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [transfers, setTransfers] = useState([]);
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user || !user.id) {
-      console.error("User not found or missing custom ID.");
-      navigate("/", { replace: true });
-    } else {
-      setOwnershipDetails((prevState) => ({
-        ...prevState,
-        owner: {
-          owner_name: user.name,
-          ownerId: user.id,
-          email: user.email,
-        },
-      }));
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const user = JSON.parse(localStorage.getItem("user"));
+  //   if (!user || !user.id) {
+  //     console.error("User not found or missing custom ID.");
+  //     navigate("/", { replace: true });
+  //   } else {
+  //     setOwnershipDetails((prevState) => ({
+  //       ...prevState,
+  //       owner: {
+  //         owner_name: user.name,
+  //         ownerId: user.id,
+  //         email: user.email,
+  //       },
+  //     }));
+  //   }
+  // }, [navigate]);
 
   useEffect(() => {
-    const storedPet = localStorage.getItem("pet");
-    if (storedPet) {
+    const fetchPetData = async () => {
       try {
-        const pet = JSON.parse(storedPet);
-        setOwnershipDetails((prevState) => ({
-          ...prevState,
-          pets: [pet],
-        }));
-        setError(false);
-      } catch (error) {
-        console.error("Error parsing pet data from localStorage:", error);
-        setError(true);
-      }
-    } else {
-      const fetchFromBackend = async () => {
-        try {
-          const user = JSON.parse(localStorage.getItem("user"));
-          const response = await axios.get(`/api/pets/getPet/${user.id}`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
-          setOwnershipDetails(response.data);
-          setError(false);
-        } catch (error) {
-          console.error("Failed to fetch ownership details:", error);
-          setError(true);
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user) {
+          navigate("/"); 
+          return;
         }
-      };
-      fetchFromBackend();
-    }
-    setLoading(false);
-  }, []);
+  
+        const response = await axios.get(`http://localhost:3000/api/pets/getPet/${user.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+  
+        if (response.data.pets && response.data.pets.length > 0) {
+          setOwnershipDetails({
+            pets: response.data.pets,
+            owner: response.data.owner,
+          });
+        } else {
+          setError(true); 
+        }
+      } catch (error) {
+        console.error("Error fetching ownership and pet details:", error);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchPetData();
+  }, [navigate]);
 
   useEffect(() => {
     const fetchTransfers = async () => {
@@ -127,7 +126,7 @@ const OwnershipTransfer = () => {
         "http://localhost:3000/api/transfer/initiate-transfer",
         {
           petId: ownershipDetails?.pets[0]?.petId,
-          currentOwnerEmail: ownershipDetails?.owner?.email,
+          currentOwnerEmail: ownershipDetails?.pets[0].owner_email,
           newOwnerEmail: formData.email,
         },
         {
@@ -275,7 +274,7 @@ const OwnershipTransfer = () => {
                     <strong>Owner's Name:</strong> {ownershipDetails.owner.owner_name}
                   </Typography>
                   <Typography>
-                    <strong>Email:</strong> {ownershipDetails.owner.email}
+                    <strong>Email:</strong> {ownershipDetails.pets[0].owner_email}
                   </Typography>
                 </Box>
 
