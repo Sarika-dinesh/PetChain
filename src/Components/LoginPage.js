@@ -5,6 +5,7 @@ import './Login.css'; // Custom styling
 import DogWalk from '../Assets/dogwalk.svg';
 import { useNavigate } from 'react-router-dom';
 
+
 function LoginPage() {
   const navigate = useNavigate();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
@@ -86,6 +87,14 @@ function LoginPage() {
       const data = await response.json();
       if (response.ok) {
         alert(data.message);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          password: "",
+          confirmPassword: "",
+          additionalInfo: "",
+        });
       } else {
         alert(data.message || "Registration failed!");
       }

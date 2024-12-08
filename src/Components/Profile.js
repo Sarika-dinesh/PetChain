@@ -3,7 +3,8 @@ import { AppBar, Toolbar, Button, Box, Typography } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import AddPetIcon from "../Assets/image.png"; // Icon for adding a pet
 import './add-pet.css'; // CSS file for styling
-
+import CornerImage from "../Assets/cornor-image.png"; 
+import LeftCorner from "../Assets/dogwoman.png"; 
 const AddPetPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,6 +25,8 @@ if (!user || !user.username) {
   return user ? (
     <div>
       {/* Header */}
+      <img src={CornerImage} alt="Corner Decoration" className="corner-image" />
+      <img src={LeftCorner} alt="Left Bottom Decoration" className="corner-image-left" />
       <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">PetChain</Typography>
@@ -74,17 +77,16 @@ if (!user || !user.username) {
       <div className="add-pet-section-container">
         <div className="add-pet-section-text-container">
           <Typography variant="h5" className="greeting-message">
-            Hi {user.username}, welcome to PetChain! Thank you for choosing us.
+            {/* Hi {user.username}, Welcome to PetChain! Thank you for choosing us. */}
           </Typography>
 
-          <h1 className="add-pet-primary-heading">Add Your Beloved Pet</h1>
-          <p className="primary-text">
-            Let's create a safe and secure profile for your pet! Add their
-            details today to get started on your journey with PetChain.
+          <h1 className="add-pet-primary-heading">Register your Pet to enjoy our services!</h1>
+          <p className="pet-primary-text">
+          Create a secure and personalized profile for your pet. Add their details now and take the first step toward a safer, smarter, and more connected journey with PetChain.
           </p>
 
           {/* Add Pet Icon Section */}
-          <div className="add-pet-icon-container">
+          {/* <div className="add-pet-icon-container">
             <img 
               src={AddPetIcon} 
               alt="Add Pet Icon" 
@@ -92,7 +94,7 @@ if (!user || !user.username) {
               onClick={() => navigate('/pet-registration')}
             />
             <p className="add-pet-text">Click to Add Pet</p>
-          </div>
+          </div> */}
 
           {/* Navigation Buttons */}
           <div className="add-pet-buttons-container">
