@@ -11,6 +11,7 @@ const PetProfile = () => {
   const [additional_info, setAdditionalInfo] = useState(""); // State for additional info
   const [is_lost, setIsLost] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false); // New state to handle submission
+  const [filePreview, setFilePreview] = useState(null); 
 
   const [petData, setPetData] = useState({
     petName: "",
@@ -31,7 +32,9 @@ const PetProfile = () => {
     const fetchData = async () => {
       const user = JSON.parse(localStorage.getItem("user"));
       const storedPet = localStorage.getItem("pet");
-      let pet = null;
+     // const savedPicture = localStorage.getItem("picture");
+      
+     let pet = null;
       if (storedPet) {
         try {
           pet = JSON.parse(storedPet);
@@ -59,8 +62,21 @@ const PetProfile = () => {
             gender: pet.gender,
             picture: pet.picture,
           });
-          setIsLost(pet.is_lost || false);
+          //setIsLost(pet.is_lost || false);
+          const lostState = localStorage.getItem("is_lost");
+          setIsLost(lostState === "true");
+          setDisplayText(
+            lostState === "true"
+              ? "Your pet has been marked as lost."
+              : ""
+          );
+
         }
+
+        // if (savedPicture) {
+        //   setFilePreview(savedPicture); // Show saved image preview
+        // }
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -84,12 +100,13 @@ const PetProfile = () => {
         console.log(additional_info);
         setIsLost(lostStatus);
         setAdditionalInfo(additional_info);
+        localStorage.setItem("is_lost", lostStatus);
         setDisplayText(
           lostStatus
             ? "Your pet has been marked as lost."
             : "Your pet has been marked as found!"
         );
-        setIsSubmitted(lostStatus); // Mark submission as successful only for lost
+        // setIsSubmitted(lostStatus); // Mark submission as successful only for lost
         setShowAdditionalInfo(false); // Always hide additional info input after submission
       } else {
         throw new Error("Unexpected response from the server");
@@ -117,6 +134,7 @@ const PetProfile = () => {
     try {
       await handleStatusChange(false, ""); // Call with found status and no additional info
       setIsLost(false); // Reset the lost state
+      localStorage.removeItem("is_lost"); // Remove lost state from localStorage
       setShowAdditionalInfo(false); // Hide additional info input
       setAdditionalInfo(""); // Clear additional info input
       setDisplayText(""); // Clear any display message
@@ -343,16 +361,22 @@ const PetProfile = () => {
         )}
 
         {!isSubmitted && displayText && (
-          <Typography variant="h6" color="error" sx={{ mt: 2 }}>
+          <Typography variant="h6" align="center" color="error" sx={{ mt: 2 }}>
             {displayText}
           </Typography>
         )}
 
-        {isSubmitted && (
+        {/* {isSubmitted && (
           <Typography variant="h6" align="center" sx={{ mt: 3, color: 'red' }}>
             Your pet has been marked as lost.
           </Typography>
-        )}
+        )} 
+
+        {displayText && (
+          <Typography variant="h6" align="center" sx={{ mt: 3, color: is_lost ? 'red' : 'green' }}>
+            {displayText}
+          </Typography>
+        )} */}
 
       </Container>
 

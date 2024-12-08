@@ -35,6 +35,21 @@ const RegisterPet = () => {
     }
   };
 
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file && file.type.startsWith("image/")) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setFilePreview(reader.result); // Preview for user
+  //       setFormData({ ...formData, picture: reader.result }); // Set Base64 to formData.picture
+  //       localStorage.setItem("picture", reader.result); // Store in local storage
+  //     };
+  //     reader.readAsDataURL(file);
+  //   } else {
+  //     alert("Please upload a valid image file.");
+  //   }
+  // };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log(user);
@@ -109,6 +124,44 @@ const RegisterPet = () => {
       alert(error.response?.data?.message || "Failed to register the pet.");
     }
   };
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     alert("You must log in first!");
+  //     navigate("/login");
+  //     return;
+  //   }
+
+  //   // Prepare data for the API
+  //   const payload = {
+  //     name: formData.petName,
+  //     breed: formData.breed,
+  //     age: formData.age,
+  //     gender: formData.gender,
+  //     color: formData.color,
+  //     picture: formData.picture, // Base64 image
+  //   };
+
+  //   try {
+  //     const response = await axios.post("http://localhost:3000/api/register/pets", payload, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+
+  //     localStorage.setItem("pet", JSON.stringify(response.data.pet)); // Save pet details in localStorage
+  //     alert("New Pet Added Successfully!");
+  //     navigate("/pprofile");
+  //   } catch (error) {
+  //     console.error("Error registering pet:", error);
+  //     alert(error.response?.data?.message || "Failed to register the pet.");
+  //   }
+  // };
+
 
   return (
     <Box
