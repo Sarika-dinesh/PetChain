@@ -670,40 +670,55 @@ const PetHealth = () => {
             Uploaded Records
           </Typography>
           {vaccinationRecords.length > 0 && (
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
-              Vaccination Records:
-            </Typography>
             <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 3, // Adjust the gap between items as needed
-              }}
-            >
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box sx={{ width: "23%" }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                Vaccination Date
+              </Typography>
               {vaccinationRecords.map((record, idx) => (
-                <Box
-                  key={idx}
-                  sx={{
-                    border: "1px solid #ddd",
-                    borderRadius: "8px",
-                    p: 2,
-                    minWidth: "250px", // Adjust width for each card
-                  }}
-                >
-                  <Typography>- Vaccination Date: {record.vaccinationDate}</Typography>
-                  <Typography>  Vaccine Type: {record.vaccineType}</Typography>
-                  <Typography>  Next Due Date: {record.nextDueDate}</Typography>
-                  {record.file && (
-                    <Typography>
-                      <a href={record.file} target="_blank" rel="noopener noreferrer">
-                        View File
-                      </a>
-                    </Typography>
-                  )}
-                </Box>
+                <Typography key={idx} sx={{ textAlign: "left" }}>
+                  {formatDate(record.vaccinationDate)}{" "}
+                  {/* Use formatDate function here */}
+                </Typography>
               ))}
             </Box>
+            <Box sx={{ width: "23%" }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                Vaccine Type
+              </Typography>
+              {vaccinationRecords.map((record, idx) => (
+                <Typography key={idx} sx={{ textAlign: "left" }}>
+                  {record.vaccineType}
+                </Typography>
+              ))}
+            </Box>
+            <Box sx={{ width: "23%" }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                Next Due Date
+              </Typography>
+              {vaccinationRecords.map((record, idx) => (
+                <Typography key={idx} sx={{ textAlign: "left" }}>
+                  {formatDate(record.nextDueDate)}{" "}
+                  {/* Use formatDate function here */}
+                </Typography>
+              ))}
+            </Box>
+            {/* <Box sx={{ width: "23%" }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                File
+              </Typography>
+              {vaccinationRecords.map((record, idx) => (
+                <Typography key={idx} sx={{ textAlign: "left" }}>
+                  {record.file.name}
+                </Typography>
+              ))}
+            </Box> */}
           </Box>
         )}
 
