@@ -48,13 +48,13 @@
     gap: 1rem;
   }
 
-  .corner-image {
+  .corner-image-vet {
     position: fixed; /* Keeps the image fixed in the viewport */
     bottom: 20px; /* Adjust for vertical positioning */
     left: 20px; /* Adjust for horizontal positioning */
     width: 400px; /* Set the size of the image */
     height: auto; /* Maintain aspect ratio */
-    /* z-index: 1000; Ensures it stays above other elements */
+    /* z-index: 1000; Ensures it stays above other elements  */
   }
   
   /* Primary Button Styling */

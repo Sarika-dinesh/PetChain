@@ -106,7 +106,7 @@ const VetProfile = () => {
   return (
     <div>
       {/* Header */}
-      <img src={CornerImage} alt="Corner Decoration" className="corner-image" />
+      <img src={CornerImage} alt="Corner Decoration" className="corner-image-vet" />
       <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">PetChain - Vet Portal</Typography>

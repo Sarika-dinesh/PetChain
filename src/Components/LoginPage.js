@@ -95,6 +95,7 @@ function LoginPage() {
           confirmPassword: "",
           additionalInfo: "",
         });
+        console.log("cleared data");
       } else {
         alert(data.message || "Registration failed!");
       }
@@ -219,8 +220,8 @@ function LoginPage() {
               >
                 <option value="" disabled>Select Role</option>
                 <option value="pet_owner">Pet Owner</option>
-                <option value="vet">Vet</option>
-                <option value="insurance-provider">Insurance Provider</option>
+                <option value="vet">Vet Doctor</option>
+                {/* <option value="insurance-provider">Insurance Provider</option> */}
               </select>
             </div>
 
@@ -236,7 +237,7 @@ function LoginPage() {
                 />
               </div>
             )}
-            {selectedRole === "insurance-provider" && (
+            {/* {selectedRole === "insurance-provider" && (
               <div className="input-field">
                 <FontAwesomeIcon icon={faUser} />
                 <input
@@ -246,7 +247,7 @@ function LoginPage() {
                   onChange={handleInputChange}
                 />
               </div>
-            )}
+            )} */}
             {selectedRole === "pet_owner" && (
               <div className="input-field">
                 <FontAwesomeIcon icon={faUser} />
