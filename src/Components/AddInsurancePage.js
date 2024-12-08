@@ -1,6 +1,6 @@
 import React from "react";
 import AddInsuranceBackground from "../Assets/about-background.png";
-import AddInsuranceImage from "../Assets/about-background-image.png";
+import AddInsuranceImage from "../Assets/PetMan.png";
 import { AppBar, Toolbar, Button, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import './add-insurance.css';

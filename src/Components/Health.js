@@ -492,7 +492,7 @@ const PetHealth = () => {
           <Box>
             <Button
               color="inherit"
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/pprofile")}
               sx={{ ml: 2 }}
             >
               My Profile
@@ -563,7 +563,7 @@ const PetHealth = () => {
           </Typography>
           <Box component="form" sx={{ mt: 2 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   name="vaccinationDate"
@@ -581,7 +581,7 @@ const PetHealth = () => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   name="vaccineType"
@@ -592,7 +592,7 @@ const PetHealth = () => {
                   helperText={errors.vaccineType}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   name="nextDueDate"
@@ -610,7 +610,7 @@ const PetHealth = () => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              {/* <Grid item xs={12} sm={3}>
                 <Input
                   fullWidth
                   name="file"
@@ -624,7 +624,7 @@ const PetHealth = () => {
                     padding: "14px 12px",
                   }}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
               <Button
               variant="contained"
