@@ -144,13 +144,13 @@ const OwnershipTransfer = () => {
           status: "Pending approval from New Owner",
         },
       ]);
-      setOpenDialog(true); 
+      setOpenDialog(true);
     } catch (error) {
       console.error("Failed to initiate ownership transfer:", error);
       alert(error.response?.data?.message || "An error occurred.");
     }
   };
-  
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
@@ -196,172 +196,173 @@ const OwnershipTransfer = () => {
           flex: 1,
           padding: 3,
         }}
+      ><Container
+        maxWidth="md"
+        sx={{
+          bgcolor: "white",
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
       >
-        {loading ? (
-          <CircularProgress />
-        ) : error || !ownershipDetails || !ownershipDetails.pets || ownershipDetails.pets.length === 0 ? (
-          <Container maxWidth="sm" sx={{ textAlign: "center", mt: 4 }}>
-            <Typography variant="h5" gutterBottom>
-              No pets found for your account.
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              Add your pet's details to start using this feature.
-            </Typography>
-            <Button
-              variant="contained"
-              sx={{ mt: 2, bgcolor: "orange" }}
-              onClick={() => navigate("/pet-registration")}
-            >
-              Add Pet
-            </Button>
-          </Container>
-        ) : (
-          <Container
-            maxWidth="md"
-            sx={{
-              bgcolor: "white",
-              p: 4,
-              borderRadius: 2,
-              boxShadow: 3,
-            }}
-          >
-            <Box sx={{ paddingLeft: 5, paddingRight: 5 }}>
-              <Typography variant="h4" align="center" gutterBottom>
-                Ownership Transfer
-              </Typography>
-
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  padding: "0 0",
-                  borderBottom: "1px solid black",
-                  marginTop: 3,
-                }}
-              >
-                Pet Information
-              </Typography>
-              <Typography>
-                <strong>Pet's Name:</strong> {ownershipDetails.pets[0].name}
-              </Typography>
-              <Typography>
-                <strong>Pet ID:</strong> {ownershipDetails.pets[0].petId}
-              </Typography>
-              <Typography>
-                <strong>Gender:</strong> {ownershipDetails.pets[0].gender}
-              </Typography>
-              <Typography>
-                <strong>Age:</strong> {ownershipDetails.pets[0].age} years
-              </Typography>
-              <Typography>
-                <strong>Breed:</strong> {ownershipDetails.pets[0].breed}
-              </Typography>
-
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  padding: "0 0",
-                  borderBottom: "1px solid black",
-                  marginTop: 3,
-                }}
-              >
-                Owner's Information
-              </Typography>
+          <Box sx={{ paddingLeft: 5, paddingRight: 5 }}>
+            {loading ? (
+              <CircularProgress />
+            ) : error || !ownershipDetails || !ownershipDetails.pets || ownershipDetails.pets.length === 0 ? (
+              <Container maxWidth="sm" sx={{ textAlign: "center", mt: 4 }}>
+                <Typography variant="h5" gutterBottom>
+                  No pets found for your account.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Add your pet's details to start using this feature.
+                </Typography>
+                <Button
+                  variant="contained"
+                  sx={{ mt: 2, bgcolor: "orange" }}
+                  onClick={() => navigate("/pet-registration")}
+                >
+                  Add Pet
+                </Button>
+              </Container>
+            ) : (
               <Box>
-                <Typography>
-                  <strong>Owner's Name:</strong> {ownershipDetails.owner.owner_name}
+                <Typography variant="h4" align="center" gutterBottom>
+                  Ownership Transfer
+                </Typography>
+
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    padding: "0 0",
+                    borderBottom: "1px solid black",
+                    marginTop: 3,
+                  }}
+                >
+                  Pet Information
                 </Typography>
                 <Typography>
-                  <strong>Email:</strong> {ownershipDetails.owner.email}
+                  <strong>Pet's Name:</strong> {ownershipDetails.pets[0].name}
                 </Typography>
-              </Box>
+                <Typography>
+                  <strong>Pet ID:</strong> {ownershipDetails.pets[0].petId}
+                </Typography>
+                <Typography>
+                  <strong>Gender:</strong> {ownershipDetails.pets[0].gender}
+                </Typography>
+                <Typography>
+                  <strong>Age:</strong> {ownershipDetails.pets[0].age} years
+                </Typography>
+                <Typography>
+                  <strong>Breed:</strong> {ownershipDetails.pets[0].breed}
+                </Typography>
 
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  padding: "0 0",
-                  borderBottom: "1px solid black",
-                  marginTop: 3,
-                }}
-              >
-                New Owner's Information
-              </Typography>
-              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-                <Grid container spacing={2}>
-                  {[
-                    { name: "name", label: "Name" },
-                    { name: "email", label: "Email" },
-                    { name: "address", label: "Address" },
-                    { name: "zipcode", label: "Zip Code" },
-                  ].map((field, idx) => (
-                    <Grid item xs={12} sm={6} key={idx}>
-                      <TextField
-                        fullWidth
-                        name={field.name}
-                        label={field.label}
-                        value={formData[field.name]}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Grid>
-                  ))}
-                  <Grid item xs={12}>
-                    <Button type="submit" variant="contained" fullWidth sx={{ bgcolor: "orange" }}>
-                      Transfer Ownership
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
-
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  padding: "0 0",
-                  borderBottom: "1px solid black",
-                  marginTop: 3,
-                }}
-              >
-                Transfers
-              </Typography>
-              {transfers.length > 0 ? (
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    padding: "0 0",
+                    borderBottom: "1px solid black",
+                    marginTop: 3,
+                  }}
+                >
+                  Owner's Information
+                </Typography>
                 <Box>
-                  {transfers.map((transfer, idx) => (
-                    <Box
-                      key={idx}
-                      sx={{
-                        border: "1px solid #ddd",
-                        borderRadius: "8px",
-                        p: 2,
-                        mb: 2,
-                      }}
-                    >
-                      <Typography>
-                        <strong>Transfer ID:</strong> {transfer._id}
-                      </Typography>
-                      <Typography>
-                        <strong>Pet Id:</strong> {transfer.petId}
-                      </Typography>
-                      <Typography>
-                        <strong>Status:</strong> {transfer.status || "Pending"}
-                      </Typography>
-                    </Box>
-                  ))}
+                  <Typography>
+                    <strong>Owner's Name:</strong> {ownershipDetails.owner.owner_name}
+                  </Typography>
+                  <Typography>
+                    <strong>Email:</strong> {ownershipDetails.owner.email}
+                  </Typography>
                 </Box>
-              ) : (
-                <Typography>No transfer requests found.</Typography>
-              )}
 
-            </Box>
-          </Container>
-        )}
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    padding: "0 0",
+                    borderBottom: "1px solid black",
+                    marginTop: 3,
+                  }}
+                >
+                  New Owner's Information
+                </Typography>
+                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+                  <Grid container spacing={2}>
+                    {[
+                      { name: "name", label: "Name" },
+                      { name: "email", label: "Email" },
+                      { name: "address", label: "Address" },
+                      { name: "zipcode", label: "Zip Code" },
+                    ].map((field, idx) => (
+                      <Grid item xs={12} sm={6} key={idx}>
+                        <TextField
+                          fullWidth
+                          name={field.name}
+                          label={field.label}
+                          value={formData[field.name]}
+                          onChange={handleChange}
+                          required
+                        />
+                      </Grid>
+                    ))}
+                    <Grid item xs={12}>
+                      <Button type="submit" variant="contained" fullWidth sx={{ bgcolor: "orange" }}>
+                        Transfer Ownership
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Box>
 
+              </Box>
+            )}
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                padding: "0 0",
+                borderBottom: "1px solid black",
+                marginTop: 3,
+              }}
+            >
+              Transfers
+            </Typography>
+            {transfers.length > 0 ? (
+              <Box>
+                {transfers.map((transfer, idx) => (
+                  <Box
+                    key={idx}
+                    sx={{
+                      border: "1px solid #ddd",
+                      borderRadius: "8px",
+                      p: 2,
+                      mb: 2,
+                    }}
+                  >
+                    <Typography>
+                      <strong>Transfer ID:</strong> {transfer._id}
+                    </Typography>
+                    <Typography>
+                      <strong>Pet Id:</strong> {transfer.petId}
+                    </Typography>
+                    <Typography>
+                      <strong>Status:</strong> {transfer.status || "Pending"}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            ) : (
+              <Typography>No transfer requests found.</Typography>
+
+
+            )}
+          </Box>
+        </Container>
         <Dialog open={openDialog} onClose={handleCloseDialog}>
           <DialogTitle>Transfer Initiated</DialogTitle>
           <DialogContent>
