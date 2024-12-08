@@ -11,9 +11,9 @@ const AddPetPage = () => {
 
   // Retrieve user information from state or localStorage
   const user = location.state?.username || JSON.parse(localStorage.getItem("user"));
-if (!user || !user.username) {
-  navigate("/", { replace: true });
-}
+// if (!user || !user.username) {
+//   navigate("/", { replace: true });
+// }
 
   // useEffect(() => {
   //   // If the user is not authenticated, redirect to the login page
