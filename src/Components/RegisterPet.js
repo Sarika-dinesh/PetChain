@@ -17,12 +17,6 @@ const RegisterPet = () => {
     picture: "",
   });
 
-  // const petData = {
-  //   ownerName: "user3",
-  //   ownerID: "OWNER_1732924652972",
-  // };
-
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData({ ...formData, file });
@@ -176,33 +170,27 @@ const RegisterPet = () => {
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">PetChain</Typography>
           <Box>
-            <Button
-              color="inherit"
-              onClick={() => navigate("/pprofile")}
-              sx={{ ml: 2 }}
-            >
+            <Button color="inherit" onClick={() => navigate("/pprofile")} sx={{ ml: 2 }}>
               My Profile
             </Button>
-            <Button
-              color="inherit"
-              onClick={() => navigate("/insurance")}
-              sx={{ ml: 2 }}
-            >
+            <Button color="inherit" onClick={() => navigate("/insurance")} sx={{ ml: 2 }}>
               Insurance
             </Button>
-            <Button
-              color="inherit"
-              onClick={() => navigate("/pet-health")}
-              sx={{ ml: 2 }}
-            >
+            <Button color="inherit" onClick={() => navigate("/pet-health")} sx={{ ml: 2 }}>
               Pet Health
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/ownership-transfer")} sx={{ ml: 2 }}>
+              Ownership Transfer
             </Button>
             <Button
               color="inherit"
-              onClick={() => navigate("/ownership-transfer")}
+              onClick={() => {
+                localStorage.removeItem("user");
+                navigate("/", { replace: true });
+              }}
               sx={{ ml: 2 }}
             >
-              Ownership Transfer
+              Logout
             </Button>
           </Box>
         </Toolbar>
@@ -269,7 +257,8 @@ const RegisterPet = () => {
                   name="file"
                   type="file"
                   onChange={handleFileChange}
-                  inputProps={{ accept: "image/*,application/pdf" }}
+                  inputProps={{ accept: ".jpeg, .png, .jpg" }}
+                  id="PetImage"
                   required
                   sx={{
                     display: "flex",

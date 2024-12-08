@@ -3,6 +3,7 @@ import { AppBar, Box, Button, Container, Grid, TextField, Typography, Toolbar, F
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
+import avatar from '../Assets/PetProfile.jpg'
 
 const PetProfile = () => {
   const navigate = useNavigate();
@@ -63,6 +64,10 @@ const PetProfile = () => {
             picture: pet.picture,
           });
           //setIsLost(pet.is_lost || false);
+          if (pet.picture) {
+            setFilePreview(`data:image/jpeg;base64,${pet.picture}`);
+          }
+
           const lostState = localStorage.getItem("is_lost");
           setIsLost(lostState === "true");
           setDisplayText(
@@ -159,21 +164,31 @@ const PetProfile = () => {
       }}
     >
       {/* Header */}
-      <AppBar position="flex" sx={{ bgcolor: "orange", color: "white" }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
+      <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">PetChain</Typography>
           <Box>
-            <Button color="inherit" onClick={() => navigate('/pprofile')} sx={{ mx: 1 }}>
+            <Button color="inherit" onClick={() => navigate("/pprofile")} sx={{ ml: 2 }}>
               My Profile
             </Button>
-            <Button color="inherit" onClick={() => navigate('/insurance')} sx={{ mx: 1 }}>
+            <Button color="inherit" onClick={() => navigate("/insurance")} sx={{ ml: 2 }}>
               Insurance
             </Button>
-            <Button color="inherit" onClick={() => navigate('/pet-health')} sx={{ mx: 1 }}>
+            <Button color="inherit" onClick={() => navigate("/pet-health")} sx={{ ml: 2 }}>
               Pet Health
             </Button>
-            <Button color="inherit" onClick={() => navigate('/ownership-transfer')} sx={{ mx: 1 }}>
+            <Button color="inherit" onClick={() => navigate("/ownership-transfer")} sx={{ ml: 2 }}>
               Ownership Transfer
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                localStorage.removeItem("user");
+                navigate("/", { replace: true });
+              }}
+              sx={{ ml: 2 }}
+            >
+              Logout
             </Button>
           </Box>
         </Toolbar>
@@ -204,13 +219,14 @@ const PetProfile = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <img
-              src={petData.picture}
+              src={filePreview || avatar}
               alt="Pet"
               style={{
-                width: '100%',
+                marginTop: 20,
+                marginLeft: 20,
+                width: '90%',
                 borderRadius: '16px',
                 height: 'auto',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
               }}
             />
           </Grid>
