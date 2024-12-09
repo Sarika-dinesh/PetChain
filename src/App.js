@@ -7,7 +7,8 @@ import Contact from './Components/Contact';
 import Services from './Components/Services';
 
 import LoginRegister from './Components/LoginPage';
-import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
+// import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
+import SearchPetProfile from './Components/Searchpetprofile';
 //import LoginRegisterJsx from './Components/LoginPageCheck';
 // import OwnershipTransfer from './Components/OwnershipTransfer';
 import InsuranceClaims from './Components/InsuranceClaims';
@@ -44,7 +45,7 @@ function App() {
           />
 
           {/* Separate pages */}
-          <Route path="/search-profile" element={<SearchPetProfileDisplay />} />
+          <Route path="/search-profile" element={<SearchPetProfile />} />
           <Route path="/login" element={<LoginRegister />}/>
         <Route path="/home" element={<Home />} />
         <Route path="/about-us" element={<About/>} />
