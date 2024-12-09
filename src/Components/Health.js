@@ -896,13 +896,13 @@ const PetHealth = () => {
             >
               Share With Vet
             </Button> */}
-            <Box component="form" onSubmit={handleSave} sx={{ mt: 2 }}>
+            {/* <Box component="form" onSubmit={handleSave} sx={{ mt: 2 }}>
             <Grid item xs={12}>
               <Button type="submit" variant="contained" fullWidth sx={{ bgcolor: "orange" }}>
                 Save Info  (Needs to be revisited after integration)
               </Button>
             </Grid>
-            </Box>
+            </Box> */}
           </Box>
         </Container>
       </Box>
