@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Button, Container, TextField, Typography, Box, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import axios for API calls
+import axios from "axios";
 
 const AddInsurancePage = () => {
   const navigate = useNavigate();
@@ -17,11 +17,11 @@ const AddInsurancePage = () => {
   });
 
   const [petData, setPetData] = useState({
-    ID: ""
+    ID: "",
   });
 
   const [ownerData, setOwnerData] = useState({
-    ownerID: ""
+    ownerID: "",
   });
 
   useEffect(() => {
@@ -49,15 +49,9 @@ const AddInsurancePage = () => {
     fetchData();
   }, []);
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Handle validityPeriod nested fields
     if (name === "startDate" || name === "endDate") {
       setFormData({
         ...formData,
@@ -71,122 +65,98 @@ const AddInsurancePage = () => {
     }
   };
 
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(formData);
-  //   alert("Insurance Added!");
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Add Insurance");
-
-    // Prepare data for the API
     const payload = {
-      ID: petData.ID,
-      ownderID: ownerData.ID,
-      provideName: formData.provideName,
+      petId: petData.ID,
+      ownerId: ownerData.ownerID,
+      providerName: formData.providerName,
       policyNumber: formData.policyNumber,
       coverageAmount: formData.coverageAmount,
       validityPeriod: {
-        startDate: formData.startDate,
-        endDate: formData.endDate,
+        startDate: formData.validityPeriod.startDate,
+        endDate: formData.validityPeriod.endDate,
       },
     };
 
     try {
-      // Send POST request to the backend API
-      console.log("POST request sent");
-      const response = await axios.post("http://localhost:3000/api/insurance/claim/add", payload);
+      const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
+      const response = await axios.post(
+        "http://172.23.10.233:3000/api/insurance/claim/add",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      console.log("Verifying data");
-      console.log(response.data);
-
-      // Save insurance information in localStorage
-      console.log("removed response ok")
       localStorage.setItem("insurance", JSON.stringify(response.data));
-      const insuranceData = JSON.parse(localStorage.getItem("insurance"))
-      console.log(insuranceData)
-
+      if (response.data.claimId) {
+        localStorage.setItem("claimId", response.data.claimId); // Store the claim ID
+      }
+      console.log("ADD INSURANCE DATA",response.data)
       alert("Pet Insurance Policy Added Successfully!");
-      navigate("/insurance"); // Redirect to profile page
+      navigate("/insurance");
     } catch (error) {
       console.error("Error adding insurance policy:", error);
-      alert(error.response?.data?.message || "Failed to add pet's insurace policy.");
+      alert(error.response?.data?.message || "Failed to add pet's insurance policy.");
     }
   };
 
   return (
     <Box
       sx={{
-        minHeight: "100vh", // Covers the full height of the viewport
+        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
       }}
     >
-      {/* Header */}
       <AppBar position="static" sx={{ bgcolor: "orange", color: "white" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">PetChain</Typography>
           <Box>
-            <Button
-              color="inherit"
-              onClick={() => navigate("/pprofile")}
-              sx={{ ml: 2 }}
-            >
+            <Button color="inherit" onClick={() => navigate("/pprofile")} sx={{ ml: 2 }}>
               My Profile
             </Button>
-            <Button
-              color="inherit"
-              onClick={() => navigate("/insurance")}
-              sx={{ ml: 2 }}
-            >
+            <Button color="inherit" onClick={() => navigate("/insurance")} sx={{ ml: 2 }}>
               Insurance
             </Button>
-            <Button
-              color="inherit"
-              onClick={() => navigate("/pet-health")}
-              sx={{ ml: 2 }}
-            >
+            <Button color="inherit" onClick={() => navigate("/pet-health")} sx={{ ml: 2 }}>
               Pet Health
             </Button>
-            <Button
-              color="inherit"
-              onClick={() => navigate("/ownership-transfer")}
-              sx={{ ml: 2 }}
-            >
+            <Button color="inherit" onClick={() => navigate("/ownership-transfer")} sx={{ ml: 2 }}>
               Ownership Transfer
             </Button>
             <Button
-            color="inherit"
-            onClick={() => {
-              localStorage.removeItem("user");
-              navigate("/", { replace: true });
-            }}
-            sx={{ ml: 2 }}
+              color="inherit"
+              onClick={() => {
+                localStorage.removeItem("user");
+                navigate("/", { replace: true });
+              }}
+              sx={{ ml: 2 }}
             >
-            Logout
-          </Button>
+              Logout
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>
 
-      {/* Main Content */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flex: 1, // Ensures the content stretches to fill available space
+          flex: 1,
           padding: 3,
         }}
       >
         <Container
           maxWidth="md"
           sx={{
-            bgcolor: "white", // Form container with white background
+            bgcolor: "white",
             p: 4,
             borderRadius: 2,
             boxShadow: 3,
@@ -295,7 +265,7 @@ const AddInsurancePage = () => {
                     bgcolor: "orange",
                     color: "white",
                     "&:hover": {
-                      bgcolor: "#e55a00", // Slightly darker shade on hover
+                      bgcolor: "#e55a00",
                     },
                   }}
                 >
