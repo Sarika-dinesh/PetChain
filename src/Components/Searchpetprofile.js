@@ -33,9 +33,7 @@ const SearchPetProfile = () => {
     const [ownerData, setOwnerData] = useState({
         ownerName: "",
     });
-    });
 
-    useEffect(() => {
     useEffect(() => {
         const fetchData = async () => {
             const user = JSON.parse(localStorage.getItem("user"));
@@ -83,7 +81,6 @@ const SearchPetProfile = () => {
 
 
         fetchData();
-    }, []);
     }, []);
 
     // Handle button click
