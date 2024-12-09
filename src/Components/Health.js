@@ -26,10 +26,11 @@ const PetHealth = () => {
     vaccineType: "",
     nextDueDate: "",
     allergies: "",
+    minorIllness: "",
+    pastTreatment: "",
     file: null,
   });
 
-   
   // const [vaccinationRecords, setVaccinationRecords] = useState([
   //   {
   //     vaccinationDate: "2023-08-15",
@@ -47,10 +48,9 @@ const PetHealth = () => {
 
   const [vaccinationRecords, setVaccinationRecords] = useState([
     {
-      vaccinationDate: "2023-08-15",
-      vaccineType: "Rabies Vaccine",
-      nextDueDate: "2024-08-15",
-      file: { name: "rabies-vaccine.pdf" },
+      vaccinationDate: null,
+      vaccineType: "Default",
+      nextDueDate: null,
     },
   ]);
 
@@ -540,11 +540,13 @@ const PetHealth = () => {
           flex: 1,
           padding: 3,
         }}
-      >
+      > 
+
         <Container
           maxWidth="md"
           sx={{ bgcolor: "white", p: 4, borderRadius: 2, boxShadow: 3 }}
         >
+
           <Typography variant="h4" align="center" gutterBottom>
             Pet Health
           </Typography>
