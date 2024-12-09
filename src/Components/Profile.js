@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import AddPetIcon from "../Assets/image.png"; // Icon for adding a pet
 import './add-pet.css'; // CSS file for styling
 import CornerImage from "../Assets/cornor-image.png"; 
-import LeftCorner from "../Assets/PetOwner.jpg"; 
+import LeftCorner from "../Assets/PetOwner.png"; 
 const AddPetPage = () => {
   const navigate = useNavigate();
   const location = useLocation();

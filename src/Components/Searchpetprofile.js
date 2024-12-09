@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Navbar from "./Navbar";
 import avatar from '../Assets/PetProfile.jpg'
 import axios from 'axios';
+import { SiH3 } from "react-icons/si";
 
 const SearchPetProfile = () => {
     const navigate = useNavigate();
@@ -32,7 +33,9 @@ const SearchPetProfile = () => {
     const [ownerData, setOwnerData] = useState({
         ownerName: "",
     });
+    });
 
+    useEffect(() => {
     useEffect(() => {
         const fetchData = async () => {
             const user = JSON.parse(localStorage.getItem("user"));
@@ -78,7 +81,9 @@ const SearchPetProfile = () => {
             }
         };
 
+
         fetchData();
+    }, []);
     }, []);
 
     // Handle button click
@@ -177,127 +182,132 @@ const SearchPetProfile = () => {
                             >
                                 Pet Information
                             </Typography>
-                            <Typography style={{ marginBottom: "20px" }}>
-                                <strong>Pet's Name:</strong> {petData.petName}
-                            </Typography>
-                            <Typography style={{ marginBottom: "20px" }}>
-                                <strong>Breed:</strong> {petData.breed}
-                            </Typography>
-                            <Typography style={{ marginBottom: "20px" }}>
-                                <strong>Age:</strong> {petData.age}
-                            </Typography>
-                            <Typography style={{ marginBottom: "20px" }}>
-                                <strong>Gender:</strong> {petData.gender}
-                            </Typography>
-                            <Typography style={{ marginBottom: "20px" }}>
-                                <strong>Color:</strong> {petData.color}
-                            </Typography>
-                            <Typography style={{ marginBottom: "20px" }}>
-                                <strong>Additional Information:</strong> {petData.additional_info}
-                            </Typography>
-
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    fontWeight: "bold",
-                                    fontSize: "1.2rem",
-                                    marginBottom: "10px",
-                                    textDecoration: "underline",
-                                    marginTop: 3,
-                                }}
-                            >
-                                Owner Information
-                            </Typography>
-
-                            <Typography style={{ marginBottom: "20px" }}>
-                                <strong>Owner's Name:</strong> {ownerData.ownerName}
-                            </Typography>
-
 
                             <div
                                 style={{
-                                    flex: 1,
-                                    display: 'flex',
-                                    justifyContent: 'right',
-                                    alignItems: 'right',
-                                    flexDirection: 'row',
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "flex-start",
+                                    // padding: "20px",
                                 }}
                             >
-                                <img
-                                    src={avatar}
-                                    alt="Pet"
-                                    style={{
-                                        width: '100%',
-                                        maxWidth: '200px',
-                                        height: 'auto',
-                                        borderRadius: '15px',
-                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                                        marginBottom: '10px',
-                                        marginTop: '60px',
-                                    }}
-                                />
-                            </div>
+                                {/* Left Section - Text Information */}
+                                <div style={{ flex: "2", marginRight: "20px", padding: "5px" }}>
 
-                            <button className="secondary-button"
-                                style={{ width: "30%", fontFamily: 'cursive', borderRadius: '5px', marginTop: '20px' }}
-                                onClick={handleFoundClick}
-                            >
-                                FOUND {petData.petName}
-                            </button>
+                                    <Typography style={{ marginBottom: "20px" }}>
+                                        <strong>Pet's Name:</strong> {petData.petName}
+                                    </Typography>
+                                    <Typography style={{ marginBottom: "20px" }}>
+                                        <strong>Breed:</strong> {petData.breed}
+                                    </Typography>
+                                    <Typography style={{ marginBottom: "20px" }}>
+                                        <strong>Age:</strong> {petData.age}
+                                    </Typography>
+                                    <Typography style={{ marginBottom: "20px" }}>
+                                        <strong>Gender:</strong> {petData.gender}
+                                    </Typography>
+                                    <Typography style={{ marginBottom: "20px" }}>
+                                        <strong>Color:</strong> {petData.color}
+                                    </Typography>
+                                    <Typography style={{ marginBottom: "20px" }}>
+                                        <strong>Additional Information:</strong> {petData.additional_info}
+                                    </Typography>
 
-                            {isInputVisible && (
-                                <div style={{ marginTop: '30px', textAlign: 'left' }}>
-                                    <label
-                                        htmlFor="myinput"
-                                        style={{
-                                            display: 'block',
-                                            fontSize: '16px',
-                                            fontWeight: 'bold',
-                                            marginBottom: '5px',
-                                            fontFamily: 'cursive',
+                                    <Typography
+                                        variant="h6"
+                                        sx={{
+                                            fontWeight: "bold",
+                                            fontSize: "1.2rem",
+                                            marginBottom: "10px",
+                                            // borderBottom: "1px solid black",
+                                            textDecoration: "underline",
+                                            marginTop: 3,
                                         }}
                                     >
-                                        Address:
-                                    </label>
-                                    <textarea
-                                        id="myinput"
-                                        placeholder="Enter the address.."
-                                        value={address}
-                                        onChange={handleAddressChange}
-                                        style={{
-                                            width: '100%',
-                                            padding: '10px',
-                                            fontSize: '14px',
-                                            border: '1px solid #ccc',
-                                            borderRadius: '5px',
-                                            resize: 'vertical',
-                                            minHeight: '80px',
-                                            maxHeight: '200px',
-                                            fontFamily: 'cursive',
-                                        }}
-                                    ></textarea>
-                                    {error && (
-                                        <p
+                                        Owner Information
+                                    </Typography>
+
+                                    <Typography style={{ marginBottom: "20px" }}>
+                                        <strong>Owner's Name:</strong> {ownerData.ownerName}
+                                    </Typography>
+
+                                </div>
+
+                                 {/* Right Section - Image */}
+                                 <div style={{ flex: "1", textAlign: "center" }}>
+                                        <img
+                                            src={avatar} // Replace with your image URL
+                                            alt="Pet"
                                             style={{
-                                                color: 'red',
-                                                marginTop: '5px',
-                                                fontSize: '14px',
+                                                width: "700px",
+                                                height: "300px",
+                                                borderRadius: "10px",
+                                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <button className="secondary-button"
+                                    style={{ width: "30%", fontFamily: 'cursive', borderRadius: '5px', marginTop: '20px' }}
+                                    onClick={handleFoundClick}
+                                >
+                                    FOUND {petData.petName}
+                                </button>
+
+                                {isInputVisible && (
+                                    <div style={{ marginTop: '30px', textAlign: 'left' }}>
+                                        <label
+                                            htmlFor="myinput"
+                                            style={{
+                                                display: 'block',
+                                                fontSize: '16px',
+                                                fontWeight: 'bold',
+                                                marginBottom: '5px',
+                                                fontFamily: 'cursive',
                                             }}
                                         >
-                                            {error}
-                                        </p>
-                                    )}
-                                </div>
-                            )}
-                            {isInputVisible && (
-                                <button className="secondary-button"
-                                    style={{ marginLeft: 'auto', fontFamily: 'cursive', borderRadius: '5px', marginTop: '20px' }}
-                                    onClick={handleNotifyClick}
-                                >
-                                    NOTIFY OWNER
-                                </button>
-                            )}
-                            {message && <p style={{ color: 'blue', fontFamily: 'cursive' }}>{message}</p>}
+                                            Address:
+                                        </label>
+                                        <textarea
+                                            id="myinput"
+                                            placeholder="Enter the address.."
+                                            value={address}
+                                            onChange={handleAddressChange}
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px',
+                                                fontSize: '14px',
+                                                border: '1px solid #ccc',
+                                                borderRadius: '5px',
+                                                resize: 'vertical',
+                                                minHeight: '80px',
+                                                maxHeight: '200px',
+                                                fontFamily: 'cursive',
+                                            }}
+                                        ></textarea>
+                                        {error && (
+                                            <p
+                                                style={{
+                                                    color: 'red',
+                                                    marginTop: '5px',
+                                                    fontSize: '14px',
+                                                }}
+                                            >
+                                                {error}
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+                                {isInputVisible && (
+                                    <button className="secondary-button"
+                                        style={{ marginLeft: 'auto', fontFamily: 'cursive', borderRadius: '5px', marginTop: '20px' }}
+                                        onClick={handleNotifyClick}
+                                    >
+                                        NOTIFY OWNER
+                                    </button>
+                                )}
+                                {message && <p style={{ color: 'blue', fontFamily: 'cursive' }}>{message}</p>}
 
                         </Box>
 
