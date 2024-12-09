@@ -18,6 +18,8 @@ const SearchPetProfile = () => {
     const [filePreview, setFilePreview] = useState(null);
 
     const [petData, setPetData] = useState({
+        
+        ID: "",
         petName: "",
         breed: "",
         age: "",
@@ -29,65 +31,94 @@ const SearchPetProfile = () => {
 
     const [ownerData, setOwnerData] = useState({
         ownerName: "",
-      });
+    });
 
-      useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
-          const user = JSON.parse(localStorage.getItem("user"));
-          const storedPet = localStorage.getItem("pet");
-        
-         let pet = null;
-          if (storedPet) {
+            const user = JSON.parse(localStorage.getItem("user"));
+            const storedPet = localStorage.getItem("pet");
+
+            let pet = null;
+            if (storedPet) {
+                try {
+                    pet = JSON.parse(storedPet);
+                } catch (error) {
+                    localStorage.removeItem("pet");
+                    console.error("Error parsing pet data from localStorage:", error);
+                }
+            }
+
             try {
-              pet = JSON.parse(storedPet);
+                if (user) {
+                    setOwnerData({
+                        ownerName: user.name,
+                    });
+                }
+
+                if (pet) {
+                    setPetData({
+                        ID: pet.petId,
+                        petName: pet.name,
+                        breed: pet.breed,
+                        age: pet.age,
+                        color: pet.color,
+                        gender: pet.gender,
+                        picture: pet.picture,
+                        additional_info: pet.additional_info,
+                    });
+                    console.log(
+                        "sarika"
+                    );
+                    console.log(pet);
+
+                }
+
             } catch (error) {
-              localStorage.removeItem("pet");
-              console.error("Error parsing pet data from localStorage:", error);
+                console.error("Error fetching data:", error);
             }
-          }
-    
-          try {
-            if (user) {
-              setOwnerData({
-                ownerName: user.name,
-              });
-            }
-    
-            if (pet) {
-              setPetData({
-                petName: pet.name,
-                breed: pet.breed,
-                age: pet.age,
-                color: pet.color,
-                gender: pet.gender,
-                picture: pet.picture,
-                additional_info: pet.additional_info,
-              });
-              console.log(pet);
-    
-            }
-    
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
         };
-    
+
         fetchData();
-      }, []);
+    }, []);
 
     // Handle button click
     const handleFoundClick = () => {
         setInputVisible(true); // Show the input box
     };
 
-    const handleNotifyClick = () => {
+    const handleNotifyClick = async () => {
         if (address.trim() === '') {
             setError("Please enter pet's location");
-        } else {
-            setError('');
-            setMessage("Congratulations! You shared the pet's location with its owner.");
+            return;
+        }
+
+        setError('');
+        setMessage(''); // Clear previous messages
+
+        try {
+       
+            const response = await axios.post('http://172.23.10.233:3000/api/pets/notify-owner', {
+                petId: petData.ID,
+                finderAddress: address,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log("response from handle",response )
+
+            if (response.status === 200) {
+                setMessage("Congratulations! You shared the pet's location with its owner.");
+            } else {
+                setError("Failed to notify the owner. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error notifying the owner:", error);
+            setError("Failed to notify the owner. Please try again.");
         }
     };
+    
 
     const handleAddressChange = (e) => {
         setAddress(e.target.value);
@@ -95,7 +126,6 @@ const SearchPetProfile = () => {
             setError(''); // Clear error when the user starts typing
         }
     };
-
 
     return (
         <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
@@ -141,7 +171,6 @@ const SearchPetProfile = () => {
                                     fontWeight: "bold",
                                     fontSize: "1.2rem",
                                     marginBottom: "10px",
-                                    // borderBottom: "1px solid black",
                                     textDecoration: "underline",
                                     marginTop: 3,
                                 }}
@@ -173,7 +202,6 @@ const SearchPetProfile = () => {
                                     fontWeight: "bold",
                                     fontSize: "1.2rem",
                                     marginBottom: "10px",
-                                    // borderBottom: "1px solid black",
                                     textDecoration: "underline",
                                     marginTop: 3,
                                 }}
@@ -186,7 +214,6 @@ const SearchPetProfile = () => {
                             </Typography>
 
 
-                            {/* Right Side: Pet Image */}
                             <div
                                 style={{
                                     flex: 1,
