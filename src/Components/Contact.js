@@ -11,7 +11,7 @@ const Contact = () => {
       <h1 className="primary-heading" style={{fontSize: "30px"}} >Have Question In Mind?</h1>
       <h1 className="primary-heading" style={{fontSize: "30px"}}>Let Us Help You</h1>
       <div className="contact-form-container">
-        <input type="text" placeholder="yourmail@gmail.com" />
+        <input type="text" placeholder="Enter your query here" />
         <button className="secondary-button">Submit</button>
       </div>
 

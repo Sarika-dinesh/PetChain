@@ -20,45 +20,63 @@ const SearchPetProfile = () => {
     const [petData, setPetData] = useState({
         petName: "",
         breed: "",
+        age: "",
+        gender: "",
+        color: "",
         picture: "",
         additional_info: "",
     });
 
-    useEffect(() => {
+    const [ownerData, setOwnerData] = useState({
+        ownerName: "",
+      });
+
+      useEffect(() => {
         const fetchData = async () => {
-            const storedPet = localStorage.getItem("pet");
-
-            let pet = null;
-            if (storedPet) {
-                try {
-                    pet = JSON.parse(storedPet);
-                } catch (error) {
-                    localStorage.removeItem("pet");
-                    console.error("Error parsing pet data from localStorage:", error);
-                }
-            }
-
+          const user = JSON.parse(localStorage.getItem("user"));
+          const storedPet = localStorage.getItem("pet");
+        
+         let pet = null;
+          if (storedPet) {
             try {
-                if (pet) {
-                    setPetData({
-                        petName: pet.name,
-                        breed: pet.breed,
-                        additional_info: pet.additional_info,
-                        picture: pet.picture,
-                    });
-                }
-
+              pet = JSON.parse(storedPet);
             } catch (error) {
-                console.error("Error fetching data:", error);
+              localStorage.removeItem("pet");
+              console.error("Error parsing pet data from localStorage:", error);
             }
+          }
+    
+          try {
+            if (user) {
+              setOwnerData({
+                ownerName: user.name,
+              });
+            }
+    
+            if (pet) {
+              setPetData({
+                petName: pet.name,
+                breed: pet.breed,
+                age: pet.age,
+                color: pet.color,
+                gender: pet.gender,
+                picture: pet.picture,
+                additional_info: pet.additional_info,
+              });
+              console.log(pet);
+    
+            }
+    
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
         };
-
+    
         fetchData();
-    }, []);
+      }, []);
 
     // Handle button click
     const handleFoundClick = () => {
-        //console.log('Pet Profile:', { petData.petName, petData.breed, petData.additional_info });
         setInputVisible(true); // Show the input box
     };
 
@@ -137,8 +155,36 @@ const SearchPetProfile = () => {
                                 <strong>Breed:</strong> {petData.breed}
                             </Typography>
                             <Typography style={{ marginBottom: "20px" }}>
+                                <strong>Age:</strong> {petData.age}
+                            </Typography>
+                            <Typography style={{ marginBottom: "20px" }}>
+                                <strong>Gender:</strong> {petData.gender}
+                            </Typography>
+                            <Typography style={{ marginBottom: "20px" }}>
+                                <strong>Color:</strong> {petData.color}
+                            </Typography>
+                            <Typography style={{ marginBottom: "20px" }}>
                                 <strong>Additional Information:</strong> {petData.additional_info}
                             </Typography>
+
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontWeight: "bold",
+                                    fontSize: "1.2rem",
+                                    marginBottom: "10px",
+                                    // borderBottom: "1px solid black",
+                                    textDecoration: "underline",
+                                    marginTop: 3,
+                                }}
+                            >
+                                Owner Information
+                            </Typography>
+
+                            <Typography style={{ marginBottom: "20px" }}>
+                                <strong>Owner's Name:</strong> {ownerData.ownerName}
+                            </Typography>
+
 
                             {/* Right Side: Pet Image */}
                             <div
