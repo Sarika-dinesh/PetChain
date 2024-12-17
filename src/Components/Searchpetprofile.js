@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Box, Button, Container, Grid, TextField, Typography, Toolbar, Fab } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
 import Navbar from "./Navbar";
 import avatar from '../Assets/PetProfile.jpg'
 import axios from 'axios';
-import { SiH3 } from "react-icons/si";
 
 const SearchPetProfile = () => {
     const navigate = useNavigate();
@@ -13,10 +11,10 @@ const SearchPetProfile = () => {
     const [address, setAddress] = useState('');
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
-    const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
-    const [additional_info, setAdditionalInfo] = useState(""); // State for additional info
-    const [isSubmitted, setIsSubmitted] = useState(false); // New state to handle submission
-    const [filePreview, setFilePreview] = useState(null);
+    // const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+    // const [additional_info, setAdditionalInfo] = useState(""); // State for additional info
+    // const [isSubmitted, setIsSubmitted] = useState(false); // New state to handle submission
+    // const [filePreview, setFilePreview] = useState(null);
 
     const [petData, setPetData] = useState({
         

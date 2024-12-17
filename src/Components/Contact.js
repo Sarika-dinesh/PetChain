@@ -36,7 +36,6 @@ const Contact = () => {
         <div className="footer-section-columns" style={{ flex: "1", textAlign: "center" }}>
           <span>244-5333-7783</span>
           <span>petchain@gmail.com</span>
-          <span>contact@gmail.com</span>
         </div>
         <div className="footer-section-columns" style={{ flex: "1", textAlign: "center" }}>
           <span>Terms & Conditions</span>

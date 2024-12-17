@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { AppBar, Toolbar, Button, Box, Typography, TextField } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from 'axios'; // Assuming you're using axios for API calls
-import './vet-profile.css'; // CSS file for styling the Vet Profile
+import axios from 'axios'; 
+import './vet-profile.css'; 
 import CornerImage from "../Assets/Vet-corner.png"; 
 
 const VetProfile = () => {
@@ -12,69 +12,11 @@ const VetProfile = () => {
   // Retrieve vet information from state or localStorage
   const user = location.state?.username || JSON.parse(localStorage.getItem("user") || "{}");
   console.log(user);
-  //const [searchQuery, setSearchQuery] = useState("");
-
-
-  //const [searchResults, setSearchResults] = useState(null);
-
-  // Fetch pets data when the component mounts
-  // useEffect(() => {
-  //   if (user && user.username) {
-  //     axios.get('/api/petHealth') 
-  //       .then(response => {
-  //         setPets(response.data); // Assuming response.data contains pet information
-  //       })
-  //       .catch(error => {
-  //         console.error("Error fetching pet data", error);
-  //       });
-  //   }
-  // }, [user]);
-
-  // Early return if no user is found
-  // if (!user || !user.username) {
-  //   navigate("/", { replace: true });
-  //   //return null;
-  // }
 
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState(null); // State to store API response
   const [error, setError] = useState(null); // State to store error messages
 
-  // const handleSearch = async () => {
-  //   if (!searchQuery.trim()) {
-  //     setError("Please enter a valid Pet ID");
-  //     return;
-  //   }
-  //   console.log("handleSearch")
-  //   setError(null); // Clear any existing errors
-  //   try {
-  //     const response = await fetch(`http://localhost:3000/api/pet-health/${searchQuery}`, {
-  //       method: "GET",
-  //     });
-  //     console.log(response)
-  //     if (!response.ok) {
-  //       throw new Error(`Error: ${response.status} - ${response.statusText}`);
-  //     }
-  //     console.log("response is ok! now data")
-  //     const data = await response.json(); 
-  //     console.log(data)
-  //     //okay
-  //     setSearchResult(data); // Update the search result
-  //     console.log(searchResult)
-  //     console.log("Searched result")
-  //   } catch (err) {
-  //     setError(err.message);
-  //     setSearchResult(null); // Clear any previous results
-  //   }
-
-  // };
-  //   // Logging searchResult when it changes
-  //   useEffect(() => {
-  //     if (searchResult) {
-  //       console.log("Updated searchResult:", searchResult);
-  //     }
-  //   }, [searchResult]);
-  
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       setError("Please enter a valid Pet ID");

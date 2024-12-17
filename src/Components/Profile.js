@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { AppBar, Toolbar, Button, Box, Typography } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import AddPetIcon from "../Assets/image.png"; // Icon for adding a pet
-import './add-pet.css'; // CSS file for styling
+
+import './add-pet.css'; 
 import CornerImage from "../Assets/cornor-image.png"; 
 import LeftCorner from "../Assets/PetOwner.png"; 
 const AddPetPage = () => {
@@ -11,16 +11,6 @@ const AddPetPage = () => {
 
   // Retrieve user information from state or localStorage
   const user = location.state?.username || JSON.parse(localStorage.getItem("user"));
-// if (!user || !user.username) {
-//   navigate("/", { replace: true });
-// }
-
-  // useEffect(() => {
-  //   // If the user is not authenticated, redirect to the login page
-  //   if (!user) {
-  //     navigate("/", { replace: true });
-  //   }
-  // }, [user, navigate]);
 
   return user ? (
     <div>
@@ -85,16 +75,6 @@ const AddPetPage = () => {
           Create a secure and personalized profile for your pet. Add their details now and take the first step toward a safer, smarter, and more connected journey with PetChain.
           </p>
 
-          {/* Add Pet Icon Section */}
-          {/* <div className="add-pet-icon-container">
-            <img 
-              src={AddPetIcon} 
-              alt="Add Pet Icon" 
-              className="add-pet-icon" 
-              onClick={() => navigate('/pet-registration')}
-            />
-            <p className="add-pet-text">Click to Add Pet</p>
-          </div> */}
 
           {/* Navigation Buttons */}
           <div className="add-pet-buttons-container">
@@ -114,7 +94,7 @@ const AddPetPage = () => {
         </div>
       </div>
     </div>
-  ) : null; // Return null to prevent rendering if not authenticated
+  ) : null; 
 };
 
 export default AddPetPage;

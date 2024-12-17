@@ -122,6 +122,7 @@ function LoginPage() {
       console.log(data.token);
       if (response.ok) {
         // Store token in localStorage
+        localStorage.clear();
         localStorage.setItem("token", data.token);
         console.log(data.token);
         localStorage.setItem("user", JSON.stringify(data.user)); // Store user data

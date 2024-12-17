@@ -14,16 +14,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
-import CommentRoundedIcon from "@mui/icons-material/CommentRounded";
 import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate(); // Initialize navigate
 
-  const [showDropdown, setShowDropdown] = useState(false); 
   const menuOptions = [
     {
       text: "Home",
@@ -61,20 +58,6 @@ const Navbar = () => {
       >
         Getting Started
       </button>
-          {/* <button
-            className='primary-button'
-            onClick={() => setShowDropdown(prev => !prev)}
-          >
-            Getting Started
-          </button>  
-          {showDropdown && (
-            <div className="dropdown-container">
-              <ul>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
-              </ul>
-            </div>
-          )} */}
         </div>
       </div>  
       <div className="navbar-menu-container">

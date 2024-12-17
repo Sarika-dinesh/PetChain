@@ -78,7 +78,7 @@ const PetHealth = () => {
         }
       }
       console.log("New data pet Health");
-      console.log(pet); //working
+      console.log(pet); 
   
       try {
         if (pet) {
@@ -372,9 +372,9 @@ const PetHealth = () => {
           formData.append(`vaccinationRecords[${index}][vaccinationDate]`, record.vaccinationDate);
           formData.append(`vaccinationRecords[${index}][vaccineType]`, record.vaccineType);
           formData.append(`vaccinationRecords[${index}][nextDueDate]`, record.nextDueDate);
-          if (record.file) {
-            formData.append(`vaccinationRecords[${index}][file]`, record.file);
-          }
+          // if (record.file) {
+          //   formData.append(`vaccinationRecords[${index}][file]`, record.file);
+          // }
         });
     
         for (let pair of formData.entries()) {
@@ -896,13 +896,13 @@ const PetHealth = () => {
             >
               Share With Vet
             </Button> */}
-            {/* <Box component="form" onSubmit={handleSave} sx={{ mt: 2 }}>
+            <Box component="form" onSubmit={handleSave} sx={{ mt: 2 }}>
             <Grid item xs={12}>
               <Button type="submit" variant="contained" fullWidth sx={{ bgcolor: "orange" }}>
                 Save Info  (Needs to be revisited after integration)
               </Button>
             </Grid>
-            </Box> */}
+            </Box>
           </Box>
         </Container>
       </Box>

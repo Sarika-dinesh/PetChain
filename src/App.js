@@ -2,15 +2,11 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './Components/Home';
 import About from './Components/About';
-// import Footer from './Components/Footer';
 import Contact from './Components/Contact';
 import Services from './Components/Services';
 
 import LoginRegister from './Components/LoginPage';
-// import SearchPetProfileDisplay from './Components/Searchpetprofiledisplay';
 import SearchPetProfile from './Components/Searchpetprofile';
-//import LoginRegisterJsx from './Components/LoginPageCheck';
-// import OwnershipTransfer from './Components/OwnershipTransfer';
 import InsuranceClaims from './Components/InsuranceClaims';
 import AddInsurancePage from './Components/AddInsurance';
 import AddInsuranceClaim from './Components/AddInsurancePage';

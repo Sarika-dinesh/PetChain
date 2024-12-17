@@ -95,7 +95,7 @@ const AddInsurancePage = () => {
 
       localStorage.setItem("insurance", JSON.stringify(response.data));
       if (response.data.claimId) {
-        localStorage.setItem("claimId", response.data.claimId); // Store the claim ID
+        localStorage.setItem("claimId", response.data.claimId);
       }
       console.log("ADD INSURANCE DATA",response.data)
       alert("Pet Insurance Policy Added Successfully!");
