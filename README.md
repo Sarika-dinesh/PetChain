@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+PetChain is a blockchain-powered platform designed to simplify pet registration, health record management, lost and found services, ownership transfers, and insurance claims. By leveraging the immutability and transparency of blockchain technology, PetChain ensures secure and tamper-proof management of pet-related information.
 
-## Available Scripts
+Features-
 
-In the project directory, you can run:
+1. Pet Registration
 
-### `npm start`
+2. Lost and Found Service
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. Health Record Management
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+4. Ownership Transfer
 
-### `npm test`
+5. Smart Contract Insurance Claim Management
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Technology Stack
 
-### `npm run build`
+Frontend React.js , MaterialUI
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Backend Node.js, expressjs
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Database ResilientDB (Blockchain-based database) , mongoDB
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Blockchain Practical Byzantine Fault Tolerance (PBFT) blockchain protocol for logging events and managing smart contracts
 
-### `npm run eject`
+Link for frontend repo PetChainPlus
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+For more info check out this blog PetChain
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Currently upgrading petchain to an emergency tool during disasters like the LA wildfires:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Wild Animals (Zoos)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Develop a centralized dashboard for zoos to register and track animals, ensuring secure, tamper-proof records on the blockchain.
 
-## Learn More
+Enable bulk registration for streamlined data management.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Implement a predictive emergency system that detects disasters based on animal behavior anomalies and environmental changes.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Generate evacuation time estimates and predict potential escape routes during crises.
 
-### Code Splitting
+Trigger smart contracts to send alerts to shelters, release pet medical records to emergency vets, and coordinate with rescue organizations.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Pets
 
-### Analyzing the Bundle Size
+Create a dashboard for pet owners to store tamper-proof pet records (dogs, cats, birds, rabbits, etc.).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Develop a GPS-enabled smart collar with enhanced indoor and outdoor positioning accuracy.
 
-### Making a Progressive Web App
+Implement AI-powered health monitoring to detect early illness signs and alert owners.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Enable geofencing to notify owners if pets leave designated safe zones.
 
-### Advanced Configuration
+Enhance the Lost & Found feature with live location tracking.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Blockchain-Based Fundraiser
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Ensure transparency and trust in donations for shelters and animal welfare initiatives.
